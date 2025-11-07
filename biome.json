@@ -25,6 +25,15 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "info",
+          "options": {
+            "attributes": ["classList"],
+            "functions": ["clsx", "cva", "cn", "tw", "tw.*"]
+          }
+        }
       }
     },
     "domains": {
@@ -35,7 +44,43 @@
   "assist": {
     "actions": {
       "source": {
-        "organizeImports": "on"
+        "useSortedAttributes": "off",
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":NODE:",
+              ":BLANK_LINE:",
+              ":BUN:",
+              ":BLANK_LINE:",
+              ["next", "next/**"],
+              ":BLANK_LINE:",
+              ["react", "react/**", "react-dom", "react-dom/**"],
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              ["@/actions", "@/actions/**"],
+              ":BLANK_LINE:",
+              ["@/components", "@/components/**"],
+              ":BLANK_LINE:",
+              ["@/config", "@/config/**"],
+              ":BLANK_LINE:",
+              ["@/hooks", "@/hooks/**"],
+              ":BLANK_LINE:",
+              ["@/lib", "@/lib/**"],
+              ":BLANK_LINE:",
+              ["@/providers", "@/providers/**"],
+              ":BLANK_LINE:",
+              ["@/styles", "@/styles/**"],
+              ":BLANK_LINE:",
+              ["@/types", "@/types/**"],
+              ":BLANK_LINE:",
+              ["@/utils", "@/utils/**"],
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        }
       }
     }
   },

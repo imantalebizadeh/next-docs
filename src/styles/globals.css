@@ -122,3 +122,95 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+
+/* Tiptap */
+.tiptap {
+  /* Task List */
+  ul[data-type="taskList"] {
+    @apply list-none ml-0 p-0;
+
+    li {
+      @apply flex items-start;
+
+      > label {
+        @apply flex-none mr-2 select-none;
+      }
+
+      > div {
+        @apply flex-1;
+      }
+    }
+
+    input[type="checkbox"] {
+      @apply cursor-pointer;
+    }
+
+    ul[data-type="taskList"] {
+      @apply m-0;
+    }
+  }
+
+  /* Image */
+  [data-resize-handle] {
+    @apply absolute z-10 bg-primary/70 border border-primary-foreground/80 rounded-sm transition-colors;
+
+    &:hover {
+      @apply bg-primary border-primary-foreground;
+    }
+
+    /* Corner handles */
+    &[data-resize-handle="top-left"],
+    &[data-resize-handle="top-right"],
+    &[data-resize-handle="bottom-left"],
+    &[data-resize-handle="bottom-right"] {
+      @apply w-2 h-2;
+    }
+
+    &[data-resize-handle="top-left"] {
+      @apply -top-1 -left-1 cursor-nwse-resize;
+    }
+
+    &[data-resize-handle="top-right"] {
+      @apply -top-1 -right-1 cursor-nesw-resize;
+    }
+
+    &[data-resize-handle="bottom-left"] {
+      @apply -bottom-1 -left-1 cursor-nesw-resize;
+    }
+
+    &[data-resize-handle="bottom-right"] {
+      @apply -bottom-1 -right-1 cursor-nwse-resize;
+    }
+
+    /* Edge handles */
+    &[data-resize-handle="top"],
+    &[data-resize-handle="bottom"] {
+      @apply h-1.5 left-2 right-2;
+    }
+
+    &[data-resize-handle="top"] {
+      @apply -top-[3px] cursor-ns-resize;
+    }
+
+    &[data-resize-handle="bottom"] {
+      @apply -bottom-[3px] cursor-ns-resize;
+    }
+
+    &[data-resize-handle="left"],
+    &[data-resize-handle="right"] {
+      @apply w-1.5 top-2 bottom-2;
+    }
+
+    &[data-resize-handle="left"] {
+      @apply -left-[3px] cursor-ew-resize;
+    }
+
+    &[data-resize-handle="right"] {
+      @apply -right-[3px] cursor-ew-resize;
+    }
+  }
+
+  [data-resize-state="true"] [data-resize-wrapper] {
+    @apply outline-1 outline-border/40 rounded-sm;
+  }
+}

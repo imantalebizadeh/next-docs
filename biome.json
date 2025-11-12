@@ -63,6 +63,8 @@
               ":BLANK_LINE:",
               ["@/components", "@/components/**"],
               ":BLANK_LINE:",
+              ["@/constants", "@/constants/**"],
+              ":BLANK_LINE:",
               ["@/config", "@/config/**"],
               ":BLANK_LINE:",
               ["@/hooks", "@/hooks/**"],

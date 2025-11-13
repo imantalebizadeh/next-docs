@@ -34,6 +34,10 @@
             "functions": ["clsx", "cva", "cn", "tw", "tw.*"]
           }
         }
+      },
+      "style": {
+        "noNestedTernary": "off",
+        "useConsistentTypeDefinitions": "off"
       }
     },
     "domains": {

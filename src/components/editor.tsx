@@ -1,62 +1,31 @@
 "use client";
 
-import ImageKit from "@tiptap/extension-image";
-import { TaskItem, TaskList } from "@tiptap/extension-list";
-import { TableKit } from "@tiptap/extension-table";
-import { Dropcursor } from "@tiptap/extensions";
 import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+
+import { extensions } from "@/constants/extensions";
+
+import { EditorToolbar } from "./editor-toolbar";
 
 export function Editor() {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
-      TableKit.configure({
-        table: { resizable: true },
-      }),
-      ImageKit.configure({
-        resize: {
-          enabled: true,
-          alwaysPreserveAspectRatio: true,
-        },
-      }),
-      Dropcursor,
-    ],
-    content: `
-        <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th colspan="3">Description</th>
-            </tr>
-            <tr>
-              <td>Cyndi Lauper</td>
-              <td>Singer</td>
-              <td>Songwriter</td>
-              <td>Actress</td>
-            </tr>
-          </tbody>
-        </table>
-      `,
+    content: "Hello World",
+    extensions,
     editorProps: {
       attributes: {
         class:
-          "focus:outline-none w-full focus-visible:outline-none border border-border py-14 px-14 min-h-svh bg-background prose prose-sm sm:prose-base max-w-none",
+          "focus:outline-none w-full mx-auto font-[Arial] max-w-4xl print:max-w-none print:p-0 focus-visible:outline-none border border-border py-14 px-14 min-h-svh bg-background prose prose-sm sm:prose-base",
       },
     },
-    // Don't render immediately on the server to avoid SSR issues
     immediatelyRender: false,
-    // Autofocus the editor when it is mounted
     autofocus: true,
   });
 
   return (
-    <div className="mx-auto w-full max-w-4xl p-4 print:max-w-none print:p-0">
-      <EditorContent editor={editor} />
+    <div className="flex flex-col gap-4">
+      <EditorToolbar editor={editor} />
+      <div className="min-h-0 flex-1 p-4 lg:p-0">
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }

@@ -468,7 +468,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         icon={PaintBucketIcon}
       />
 
-      {/* Highlight Color Picker */}
+      {/* Highlight Toggle */}
       <EditorToolbarToggle
         icon={HighlighterIcon}
         label="Highlight"

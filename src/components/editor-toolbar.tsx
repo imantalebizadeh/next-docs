@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
 
 import type { Level } from "@tiptap/extension-heading";
 import { type Editor, useEditorState } from "@tiptap/react";
@@ -62,14 +62,21 @@ function EditorToolbarButton({
   icon,
   label,
   onClick,
+  ...props
 }: {
   label: string;
   icon: LucideIcon;
   onClick: () => void;
-}) {
+} & ComponentProps<typeof Button>) {
   const IconComponent = icon;
   return (
-    <Button variant="ghost" size="icon-sm" title={label} onClick={onClick}>
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      title={label}
+      onClick={onClick}
+      {...props}
+    >
       <IconComponent />
       <span className="sr-only">{label}</span>
     </Button>
@@ -81,14 +88,21 @@ function EditorToolbarToggle({
   icon,
   label,
   onClick,
+  ...props
 }: {
   label: string;
   icon: LucideIcon;
   onClick: () => void;
-}) {
+} & ComponentProps<typeof Toggle>) {
   const IconComponent = icon;
   return (
-    <Toggle variant="default" size="sm" title={label} onClick={onClick}>
+    <Toggle
+      variant="default"
+      size="sm"
+      title={label}
+      onClick={onClick}
+      {...props}
+    >
       <IconComponent />
       <span className="sr-only">{label}</span>
     </Toggle>
@@ -358,6 +372,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       color: ctx.editor?.getAttributes("textStyle").color || "#0a0a0a",
       backgroundColor:
         ctx.editor?.getAttributes("textStyle").backgroundColor || "#ffffff",
+      isHighlight: ctx.editor?.isActive("highlight"),
     }),
   });
 
@@ -457,6 +472,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       <EditorToolbarToggle
         icon={HighlighterIcon}
         label="Highlight"
+        pressed={editorState?.isHighlight}
         onClick={() => editor?.chain().focus().toggleHighlight().run()}
       />
 

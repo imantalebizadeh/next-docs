@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconLink } from "@tabler/icons-react";
 import { type Editor, useEditorState } from "@tiptap/react";
-import { LinkIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -103,7 +103,7 @@ export function EditorToolbarLinkButton({ editor }: { editor: Editor | null }) {
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <EditorToolbarButton icon={LinkIcon} label="Link" />
+        <EditorToolbarButton icon={IconLink} label="Link" />
       </PopoverTrigger>
       <PopoverContent align="start">
         <form onSubmit={form.handleSubmit(onSubmit)}>

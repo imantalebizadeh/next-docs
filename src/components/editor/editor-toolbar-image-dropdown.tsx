@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconLink, IconPhoto, IconUpload } from "@tabler/icons-react";
 import type { Editor } from "@tiptap/react";
-import { ImageIcon, LinkIcon, UploadIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -184,15 +184,15 @@ export function EditorToolbarImageDropdown({
     <>
       <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
         <DropdownMenuTrigger asChild>
-          <EditorToolbarButton icon={ImageIcon} label="Add Image" />
+          <EditorToolbarButton icon={IconPhoto} label="Add Image" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={handleUrlClick}>
-            <LinkIcon className="mr-2 size-4" />
+            <IconLink className="mr-2 size-4" />
             Add Image from URL
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleUploadClick}>
-            <UploadIcon className="mr-2 size-4" />
+            <IconUpload className="mr-2 size-4" />
             Upload Image from Computer
           </DropdownMenuItem>
         </DropdownMenuContent>

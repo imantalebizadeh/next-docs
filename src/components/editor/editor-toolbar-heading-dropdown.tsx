@@ -1,6 +1,6 @@
+import { IconChevronDown } from "@tabler/icons-react";
 import type { Level } from "@tiptap/extension-heading";
 import { type Editor, useEditorState } from "@tiptap/react";
-import { ChevronDownIcon } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -39,7 +39,7 @@ export function EditorToolbarHeadingDropdown({
           {editorState?.heading
             ? `Heading ${editorState.heading}`
             : "Paragraph"}
-          <ChevronDownIcon className="size-4" />
+          <IconChevronDown className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-36">

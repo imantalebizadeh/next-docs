@@ -72,6 +72,12 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         onClick={() => editor?.chain().focus().unsetAllMarks().run()}
       />
 
+      {/* Separator */}
+      <Separator
+        className="mx-1 data-[orientation=vertical]:h-8"
+        orientation="vertical"
+      />
+
       {/* Font Family and Size Dropdown */}
       <section className="flex items-center gap-1">
         {/* Heading Dropdown */}
@@ -120,18 +126,20 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
       {/* Text Color Picker */}
       <EditorToolbarColorPicker
+        label="Text Color"
+        icon={IconBaseline}
         value={editorState?.color}
         onValueChange={(color) => editor?.chain().focus().setColor(color).run()}
-        icon={IconBaseline}
       />
 
       {/* Background Color Picker */}
       <EditorToolbarColorPicker
+        label="Background Color"
+        icon={IconBucketDroplet}
         value={editorState?.backgroundColor}
         onValueChange={(color) =>
           editor?.chain().focus().setBackgroundColor(color).run()
         }
-        icon={IconBucketDroplet}
       />
 
       {/* Highlight Toggle */}

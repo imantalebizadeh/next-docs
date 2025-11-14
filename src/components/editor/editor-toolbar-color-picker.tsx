@@ -38,7 +38,7 @@ export function EditorToolbarColorPicker({
       <Popover modal>
         <PopoverTrigger asChild>
           <Button variant="ghost" size="icon-sm" title="Text Color">
-            <IconComponent style={{ color: value }} />
+            <IconComponent />
             <span className="sr-only">Text Color</span>
           </Button>
         </PopoverTrigger>

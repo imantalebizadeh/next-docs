@@ -39,7 +39,7 @@ export function EditorToolbarFontSizeDropdown({
           <IconChevronDown className="size-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-36">
+      <DropdownMenuContent className="max-h-52 w-36">
         <DropdownMenuLabel>Font Size</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {fontSizes.map(({ label, value }) => (

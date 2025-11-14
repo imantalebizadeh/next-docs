@@ -1,12 +1,12 @@
 import type { ComponentProps } from "react";
 
-import type { LucideIcon } from "lucide-react";
+import type { Icon } from "@tabler/icons-react";
 
 import { Button } from "../ui/button";
 
 export type EditorToolbarButtonProps = {
   label: string;
-  icon: LucideIcon;
+  icon: Icon;
   onClick?: () => void;
 } & ComponentProps<typeof Button>;
 

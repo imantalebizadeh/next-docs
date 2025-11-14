@@ -1,25 +1,25 @@
-import { type Editor, useEditorState } from "@tiptap/react";
 import {
-  AlignCenterIcon,
-  AlignJustifyIcon,
-  AlignLeftIcon,
-  AlignRightIcon,
-  BaselineIcon,
-  BoldIcon,
-  HighlighterIcon,
-  ItalicIcon,
-  ListIcon,
-  ListOrderedIcon,
-  ListTodoIcon,
-  MessageCircleMoreIcon,
-  PaintBucketIcon,
-  PrinterIcon,
-  Redo2Icon,
-  RemoveFormattingIcon,
-  StrikethroughIcon,
-  UnderlineIcon,
-  Undo2Icon,
-} from "lucide-react";
+  IconAlignCenter,
+  IconAlignJustified,
+  IconAlignLeft,
+  IconAlignRight,
+  IconArrowBackUp,
+  IconArrowForwardUp,
+  IconBaseline,
+  IconBold,
+  IconBucketDroplet,
+  IconClearFormatting,
+  IconHighlight,
+  IconItalic,
+  IconList,
+  IconListCheck,
+  IconListNumbers,
+  IconMessageCircle,
+  IconPrinter,
+  IconStrikethrough,
+  IconUnderline,
+} from "@tabler/icons-react";
+import { type Editor, useEditorState } from "@tiptap/react";
 
 import { EditorToolbarButton } from "./editor/editor-toolbar-button";
 import { EditorToolbarColorPicker } from "./editor/editor-toolbar-color-picker";
@@ -46,29 +46,29 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
     <div className="flex items-center gap-px overflow-x-auto border-border border-t border-b bg-background px-4 py-1 lg:justify-center print:hidden">
       {/* Undo */}
       <EditorToolbarButton
-        icon={Undo2Icon}
+        icon={IconArrowBackUp}
         label="Undo"
         onClick={() => editor?.chain().focus().undo().run()}
       />
 
       {/* Redo */}
       <EditorToolbarButton
-        icon={Redo2Icon}
+        icon={IconArrowForwardUp}
         label="Redo"
         onClick={() => editor?.chain().focus().redo().run()}
       />
 
       {/* Print */}
       <EditorToolbarButton
-        icon={PrinterIcon}
+        icon={IconPrinter}
         label="Print"
         onClick={() => window.print()}
       />
 
-      {/* Remove Formatting */}
+      {/* Clear Formatting */}
       <EditorToolbarButton
-        icon={RemoveFormattingIcon}
-        label="Remove Formatting"
+        icon={IconClearFormatting}
+        label="Clear Formatting"
         onClick={() => editor?.chain().focus().unsetAllMarks().run()}
       />
 
@@ -92,28 +92,28 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
       {/* Bold Toggle */}
       <EditorToolbarToggle
-        icon={BoldIcon}
+        icon={IconBold}
         label="Bold"
         onClick={() => editor?.chain().focus().toggleBold().run()}
       />
 
       {/* Italic Toggle */}
       <EditorToolbarToggle
-        icon={ItalicIcon}
+        icon={IconItalic}
         label="Italic"
         onClick={() => editor?.chain().focus().toggleItalic().run()}
       />
 
       {/* Underline Toggle */}
       <EditorToolbarToggle
-        icon={UnderlineIcon}
+        icon={IconUnderline}
         label="Underline"
         onClick={() => editor?.chain().focus().toggleUnderline().run()}
       />
 
       {/* Strikethrough Toggle */}
       <EditorToolbarToggle
-        icon={StrikethroughIcon}
+        icon={IconStrikethrough}
         label="Strikethrough"
         onClick={() => editor?.chain().focus().toggleStrike().run()}
       />
@@ -122,7 +122,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       <EditorToolbarColorPicker
         value={editorState?.color}
         onValueChange={(color) => editor?.chain().focus().setColor(color).run()}
-        icon={BaselineIcon}
+        icon={IconBaseline}
       />
 
       {/* Background Color Picker */}
@@ -131,12 +131,12 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         onValueChange={(color) =>
           editor?.chain().focus().setBackgroundColor(color).run()
         }
-        icon={PaintBucketIcon}
+        icon={IconBucketDroplet}
       />
 
       {/* Highlight Toggle */}
       <EditorToolbarToggle
-        icon={HighlighterIcon}
+        icon={IconHighlight}
         label="Highlight"
         pressed={editorState?.isHighlight}
         onClick={() => editor?.chain().focus().toggleHighlight().run()}
@@ -156,7 +156,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
       {/* Add Comment Button */}
       <EditorToolbarButton
-        icon={MessageCircleMoreIcon}
+        icon={IconMessageCircle}
         label="Add Comment"
         onClick={() => {
           // TODO: Add comment
@@ -172,28 +172,28 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
       {/* Align Left Button */}
       <EditorToolbarButton
-        icon={AlignLeftIcon}
+        icon={IconAlignLeft}
         label="Align Left"
         onClick={() => editor?.chain().focus().setTextAlign("left").run()}
       />
 
       {/* Align Center Button */}
       <EditorToolbarButton
-        icon={AlignCenterIcon}
+        icon={IconAlignCenter}
         label="Align Center"
         onClick={() => editor?.chain().focus().setTextAlign("center").run()}
       />
 
       {/* Align Right Button */}
       <EditorToolbarButton
-        icon={AlignRightIcon}
+        icon={IconAlignRight}
         label="Align Right"
         onClick={() => editor?.chain().focus().setTextAlign("right").run()}
       />
 
       {/* Align Justify Button */}
       <EditorToolbarButton
-        icon={AlignJustifyIcon}
+        icon={IconAlignJustified}
         label="Align Justify"
         onClick={() => editor?.chain().focus().setTextAlign("justify").run()}
       />
@@ -206,21 +206,21 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
       {/* Unordered List Button */}
       <EditorToolbarButton
-        icon={ListIcon}
+        icon={IconList}
         label="Unordered List"
         onClick={() => editor?.chain().focus().toggleBulletList().run()}
       />
 
       {/* Ordered List Button */}
       <EditorToolbarButton
-        icon={ListOrderedIcon}
+        icon={IconListNumbers}
         label="Ordered List"
         onClick={() => editor?.chain().focus().toggleOrderedList().run()}
       />
 
       {/* Task List Button */}
       <EditorToolbarButton
-        icon={ListTodoIcon}
+        icon={IconListCheck}
         label="Task List"
         onClick={() => editor?.chain().focus().toggleTaskList().run()}
       />

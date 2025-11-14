@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import type { Icon } from "@tabler/icons-react";
 
 import {
   ColorPicker,
@@ -24,7 +24,7 @@ export function EditorToolbarColorPicker({
 }: {
   value: string;
   onValueChange: (color: string) => void;
-  icon: LucideIcon;
+  icon: Icon;
 }) {
   const IconComponent = icon;
 

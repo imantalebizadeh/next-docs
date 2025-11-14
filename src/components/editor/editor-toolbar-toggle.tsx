@@ -1,12 +1,12 @@
 import type { ComponentProps } from "react";
 
-import type { LucideIcon } from "lucide-react";
+import type { Icon } from "@tabler/icons-react";
 
 import { Toggle } from "../ui/toggle";
 
 export type EditorToolbarToggleProps = {
   label: string;
-  icon: LucideIcon;
+  icon: Icon;
   onClick: () => void;
 } & ComponentProps<typeof Toggle>;
 

@@ -15,8 +15,8 @@ import {
   useSyncExternalStore,
 } from "react";
 
+import { IconColorPicker } from "@tabler/icons-react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { PipetteIcon } from "lucide-react";
 import { Slider as SliderPrimitive, Slot as SlotPrimitive } from "radix-ui";
 
 import { Button } from "@/components/ui/button";
@@ -1161,7 +1161,7 @@ function ColorPickerEyeDropper(props: ColorPickerEyeDropperProps) {
       onClick={onEyeDropper}
       disabled={context.disabled}
     >
-      {children ?? <PipetteIcon />}
+      {children ?? <IconColorPicker />}
     </Button>
   );
 }

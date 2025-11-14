@@ -1,5 +1,5 @@
+import { IconChevronDown } from "@tabler/icons-react";
 import { type Editor, useEditorState } from "@tiptap/react";
-import { ChevronDownIcon } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -36,7 +36,7 @@ export function EditorToolbarFontSizeDropdown({
           className="w-fit rounded-full"
         >
           {editorState?.fontSize?.replace("px", "") || "16"}
-          <ChevronDownIcon className="size-4" />
+          <IconChevronDown className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-36">

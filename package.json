@@ -10,6 +10,7 @@
     "lint:fix": "bunx ultracite fix"
   },
   "dependencies": {
+    "@radix-ui/react-separator": "^1.1.8",
     "@tiptap/extension-highlight": "^3.10.7",
     "@tiptap/extension-image": "^3.10.4",
     "@tiptap/extension-link": "^3.10.7",

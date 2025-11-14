@@ -86,7 +86,7 @@ function AddImageFromUrlDialog({
             Enter the URL of the image you want to insert.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="image-url-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup className="gap-y-4">
             <Controller
               name="url"
@@ -97,7 +97,6 @@ function AddImageFromUrlDialog({
                   <Input
                     {...field}
                     id="image-url"
-                    type="url"
                     placeholder="https://example.com/image.jpg"
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
@@ -109,17 +108,19 @@ function AddImageFromUrlDialog({
               )}
             />
           </FieldGroup>
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <Button type="submit">Add Image</Button>
-          </DialogFooter>
         </form>
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleOpenChange(false)}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" form="image-url-form">
+            Add Image
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

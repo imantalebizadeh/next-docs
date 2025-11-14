@@ -1,8 +1,4 @@
-import { type ComponentProps, useEffect, useState } from "react";
-
-import type { Level } from "@tiptap/extension-heading";
 import { type Editor, useEditorState } from "@tiptap/react";
-import type { LucideIcon } from "lucide-react";
 import {
   AlignCenterIcon,
   AlignJustifyIcon,
@@ -10,11 +6,8 @@ import {
   AlignRightIcon,
   BaselineIcon,
   BoldIcon,
-  ChevronDownIcon,
   HighlighterIcon,
-  ImageIcon,
   ItalicIcon,
-  LinkIcon,
   ListIcon,
   ListOrderedIcon,
   ListTodoIcon,
@@ -28,342 +21,15 @@ import {
   Undo2Icon,
 } from "lucide-react";
 
-import {
-  ColorPicker,
-  ColorPickerAlphaSlider,
-  ColorPickerArea,
-  ColorPickerEyeDropper,
-  ColorPickerFormatSelect,
-  ColorPickerHueSlider,
-  ColorPickerInput,
-} from "@/components/ui/color-picker";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import { fontFamilies, fontSizes, headings } from "@/constants/editor-toolbar";
-
-import { Button } from "./ui/button";
+import { EditorToolbarButton } from "./editor/editor-toolbar-button";
+import { EditorToolbarColorPicker } from "./editor/editor-toolbar-color-picker";
+import { EditorToolbarFontFamilyDropdown } from "./editor/editor-toolbar-fontfamily-dropdown";
+import { EditorToolbarFontSizeDropdown } from "./editor/editor-toolbar-fontsize-dropdown";
+import { EditorToolbarHeadingDropdown } from "./editor/editor-toolbar-heading-dropdown";
+import { EditorToolbarImageDropdown } from "./editor/editor-toolbar-image-dropdown";
+import { EditorToolbarLinkButton } from "./editor/editor-toolbar-link-button";
+import { EditorToolbarToggle } from "./editor/editor-toolbar-toggle";
 import { Separator } from "./ui/separator";
-import { Toggle } from "./ui/toggle";
-
-// Button component for the editor toolbar
-function EditorToolbarButton({
-  icon,
-  label,
-  onClick,
-  ...props
-}: {
-  label: string;
-  icon: LucideIcon;
-  onClick: () => void;
-} & ComponentProps<typeof Button>) {
-  const IconComponent = icon;
-  return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      title={label}
-      onClick={onClick}
-      {...props}
-    >
-      <IconComponent />
-      <span className="sr-only">{label}</span>
-    </Button>
-  );
-}
-
-// Toggle component for the editor toolbar
-function EditorToolbarToggle({
-  icon,
-  label,
-  onClick,
-  ...props
-}: {
-  label: string;
-  icon: LucideIcon;
-  onClick: () => void;
-} & ComponentProps<typeof Toggle>) {
-  const IconComponent = icon;
-  return (
-    <Toggle
-      variant="default"
-      size="sm"
-      title={label}
-      onClick={onClick}
-      {...props}
-    >
-      <IconComponent />
-      <span className="sr-only">{label}</span>
-    </Toggle>
-  );
-}
-
-// Heading Dropdown component for the editor toolbar
-function EditorToolbarHeadingDropdown({ editor }: { editor: Editor | null }) {
-  const [activeHeading, setActiveHeading] = useState<string>("Paragraph");
-
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    const updateActiveHeading = () => {
-      const headingAttrs = editor.getAttributes("heading");
-      if (headingAttrs.level) {
-        const heading = headings.find((h) => h.value === headingAttrs.level);
-        setActiveHeading(heading?.label || "Heading");
-        return;
-      }
-
-      const isParagraph = editor.isActive("paragraph");
-      if (isParagraph) {
-        const paragraphHeading = headings.find((h) => h.value === 0);
-        setActiveHeading(paragraphHeading?.label || "Paragraph");
-      } else {
-        setActiveHeading("Paragraph");
-      }
-    };
-
-    // Update on editor changes
-    editor.on("update", updateActiveHeading);
-    editor.on("selectionUpdate", updateActiveHeading);
-
-    // Initial update
-    updateActiveHeading();
-
-    return () => {
-      editor.off("update", updateActiveHeading);
-      editor.off("selectionUpdate", updateActiveHeading);
-    };
-  }, [editor]);
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          title="Heading"
-          className="w-fit rounded-full"
-        >
-          {activeHeading}
-          <ChevronDownIcon className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-36">
-        <DropdownMenuLabel>Heading</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {headings.map(({ label, value }) => (
-          <DropdownMenuItem
-            key={label}
-            onClick={() => {
-              if (value === 0) {
-                editor?.chain().focus().setParagraph().run();
-              } else {
-                editor
-                  ?.chain()
-                  .focus()
-                  .setHeading({ level: value as Level })
-                  .run();
-              }
-            }}
-          >
-            {label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-// Font Family Dropdown component for the editor toolbar
-function EditorToolbarFontFamilyDropdown({
-  editor,
-}: {
-  editor: Editor | null;
-}) {
-  const [activeFontFamily, setActiveFontFamily] = useState<string>("Arial");
-
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    const updateActiveFontFamily = () => {
-      const fontFamilyAttrs = editor.getAttributes("textStyle");
-      if (fontFamilyAttrs.fontFamily) {
-        const fontFamily = fontFamilies.find(
-          (f) => f.value === fontFamilyAttrs.fontFamily
-        );
-        setActiveFontFamily(fontFamily?.label || "Font Family");
-      } else {
-        setActiveFontFamily("Arial");
-      }
-    };
-
-    // Update on editor changes
-    editor.on("update", updateActiveFontFamily);
-    editor.on("selectionUpdate", updateActiveFontFamily);
-
-    // Initial update
-    updateActiveFontFamily();
-
-    return () => {
-      editor.off("update", updateActiveFontFamily);
-      editor.off("selectionUpdate", updateActiveFontFamily);
-    };
-  }, [editor]);
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          title="Font Family"
-          className="w-fit rounded-full"
-        >
-          {activeFontFamily}
-          <ChevronDownIcon className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40">
-        <DropdownMenuLabel>Font Family</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {fontFamilies.map(({ label, value, className }) => (
-          <DropdownMenuItem
-            key={label}
-            className={className}
-            onClick={() => editor?.chain().focus().setFontFamily(value).run()}
-          >
-            {label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-// Font Size Dropdown component for the editor toolbar
-function EditorToolbarFontSizeDropdown({ editor }: { editor: Editor | null }) {
-  const [activeFontSize, setActiveFontSize] = useState<string>("16");
-
-  useEffect(() => {
-    if (!editor) {
-      return;
-    }
-
-    const updateActiveFontSize = () => {
-      const fontFamilyAttrs = editor.getAttributes("textStyle");
-      if (fontFamilyAttrs.fontSize) {
-        const fontSize = fontSizes.find(
-          (f) => f.value === fontFamilyAttrs.fontSize
-        );
-        setActiveFontSize(fontSize?.label || "16");
-      } else {
-        setActiveFontSize("16");
-      }
-    };
-
-    // Update on editor changes
-    editor.on("update", updateActiveFontSize);
-    editor.on("selectionUpdate", updateActiveFontSize);
-
-    // Initial update
-    updateActiveFontSize();
-
-    return () => {
-      editor.off("update", updateActiveFontSize);
-      editor.off("selectionUpdate", updateActiveFontSize);
-    };
-  }, [editor]);
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          title="Font Size"
-          className="w-fit rounded-full"
-        >
-          {activeFontSize}
-          <ChevronDownIcon className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-36">
-        <DropdownMenuLabel>Font Size</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {fontSizes.map(({ label, value }) => (
-          <DropdownMenuItem
-            key={label}
-            onClick={() => editor?.chain().focus().setFontSize(value).run()}
-          >
-            {label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-// Color Picker component for the editor toolbar
-function EditorToolbarColorPicker({
-  value,
-  onValueChange,
-  icon,
-}: {
-  value: string;
-  onValueChange: (color: string) => void;
-  icon: LucideIcon;
-}) {
-  const IconComponent = icon;
-
-  return (
-    <ColorPicker
-      value={value}
-      onValueChange={onValueChange}
-      inline
-      defaultFormat="hex"
-    >
-      <Popover modal>
-        <PopoverTrigger asChild>
-          <Button variant="ghost" size="icon-sm" title="Text Color">
-            <IconComponent style={{ color: value }} />
-            <span className="sr-only">Text Color</span>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="p-0">
-          <div className="flex flex-col gap-4 rounded-lg border p-4">
-            <ColorPickerArea />
-            <div className="flex items-center gap-2">
-              <ColorPickerEyeDropper />
-              <div className="flex flex-1 flex-col gap-2">
-                <ColorPickerHueSlider />
-                <ColorPickerAlphaSlider />
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <ColorPickerFormatSelect />
-              <ColorPickerInput />
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
-    </ColorPicker>
-  );
-}
 
 export function EditorToolbar({ editor }: { editor: Editor | null }) {
   const editorState = useEditorState({
@@ -483,11 +149,10 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       />
 
       {/* Link Button */}
-      <EditorToolbarButton
-        icon={LinkIcon}
-        label="Link"
-        onClick={() => editor?.chain().focus().toggleLink().run()}
-      />
+      <EditorToolbarLinkButton editor={editor} />
+
+      {/* Add Image Button */}
+      <EditorToolbarImageDropdown editor={editor} />
 
       {/* Add Comment Button */}
       <EditorToolbarButton
@@ -496,16 +161,6 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         onClick={() => {
           // TODO: Add comment
           console.log("Add Comment");
-        }}
-      />
-
-      {/* Add Image Button */}
-      <EditorToolbarButton
-        icon={ImageIcon}
-        label="Add Image"
-        onClick={() => {
-          // TODO: Add image
-          console.log("Add Image");
         }}
       />
 

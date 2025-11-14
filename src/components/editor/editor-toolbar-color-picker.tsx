@@ -19,10 +19,12 @@ import { Button } from "../ui/button";
 
 export function EditorToolbarColorPicker({
   value,
+  label,
   onValueChange,
   icon,
 }: {
   value: string;
+  label: string;
   onValueChange: (color: string) => void;
   icon: Icon;
 }) {
@@ -37,9 +39,9 @@ export function EditorToolbarColorPicker({
     >
       <Popover modal>
         <PopoverTrigger asChild>
-          <Button variant="ghost" size="icon-sm" title="Text Color">
+          <Button variant="ghost" size="icon-sm" title={label}>
             <IconComponent />
-            <span className="sr-only">Text Color</span>
+            <span className="sr-only">{label}</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0">

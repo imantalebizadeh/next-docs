@@ -30,6 +30,7 @@ import { EditorToolbarImageDropdown } from "./editor/editor-toolbar-image-dropdo
 import { EditorToolbarLinkButton } from "./editor/editor-toolbar-link-button";
 import { EditorToolbarToggle } from "./editor/editor-toolbar-toggle";
 import { Separator } from "./ui/separator";
+import { EditorToolbarLineHeightDropdown } from "./editor/editor-toolbar-line-height-dropdown";
 
 export function EditorToolbar({ editor }: { editor: Editor | null }) {
   const editorState = useEditorState({
@@ -232,6 +233,15 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         label="Task List"
         onClick={() => editor?.chain().focus().toggleTaskList().run()}
       />
+
+      {/* Separator */}
+      <Separator
+        className="mx-1 data-[orientation=vertical]:h-8"
+        orientation="vertical"
+      />
+
+      {/* Line Height Dropdown */}
+      <EditorToolbarLineHeightDropdown editor={editor} />
     </div>
   );
 }

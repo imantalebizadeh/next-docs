@@ -1,5 +1,6 @@
 import { Highlight } from "@tiptap/extension-highlight";
 import ImageKit from "@tiptap/extension-image";
+import { Link } from "@tiptap/extension-link";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
 import { TableKit } from "@tiptap/extension-table";
 import { TextAlign } from "@tiptap/extension-text-align";
@@ -12,6 +13,10 @@ export const extensions: Extensions = [
   TextStyleKit,
   TaskList,
   Highlight,
+  Link.configure({
+    defaultProtocol: "https",
+    autolink: false,
+  }),
   TaskItem.configure({
     nested: true,
   }),

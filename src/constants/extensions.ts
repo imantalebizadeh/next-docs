@@ -1,6 +1,5 @@
 import { Highlight } from "@tiptap/extension-highlight";
 import ImageKit from "@tiptap/extension-image";
-import { Link } from "@tiptap/extension-link";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
 import { TableKit } from "@tiptap/extension-table";
 import { TextAlign } from "@tiptap/extension-text-align";
@@ -9,14 +8,15 @@ import type { Extensions } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 export const extensions: Extensions = [
-  StarterKit,
+  StarterKit.configure({
+    link: {
+      autolink: false,
+      defaultProtocol: "https",
+    },
+  }),
   TextStyleKit,
   TaskList,
   Highlight,
-  Link.configure({
-    defaultProtocol: "https",
-    autolink: false,
-  }),
   TaskItem.configure({
     nested: true,
   }),

@@ -188,11 +188,11 @@ export function EditorToolbarImageDropdown({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={handleUrlClick}>
-            <IconLink className="mr-2 size-4" />
+            <IconLink className="size-4" />
             Add Image from URL
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleUploadClick}>
-            <IconUpload className="mr-2 size-4" />
+            <IconUpload className="size-4" />
             Upload Image from Computer
           </DropdownMenuItem>
         </DropdownMenuContent>

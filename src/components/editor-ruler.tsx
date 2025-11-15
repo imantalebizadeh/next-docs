@@ -93,7 +93,7 @@ export function EditorRuler({
   ]);
 
   return (
-    <div className="relative h-8 w-full select-none border-border border-b bg-muted/30 print:hidden">
+    <div className="relative h-8 w-full select-none">
       <div
         ref={rulerRef}
         style={{ width: `${containerWidth}px` }}
@@ -107,7 +107,7 @@ export function EditorRuler({
             <div
               key={`tick-${i + 1}`}
               className={cn(
-                "relative h-2 w-px bg-border",
+                "relative h-2 w-px bg-primary/20",
                 isMajor && "h-4 bg-primary",
                 isMiddle && "bg-primary/50"
               )}

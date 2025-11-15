@@ -17,6 +17,7 @@ import {
   IconMessagePlus,
   IconPrinter,
   IconStrikethrough,
+  IconTextSpellcheck,
   IconUnderline,
 } from "@tabler/icons-react";
 import { type Editor, useEditorState } from "@tiptap/react";
@@ -71,6 +72,33 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         icon={IconClearFormatting}
         label="Clear Formatting"
         onClick={() => editor?.chain().focus().unsetAllMarks().run()}
+      />
+
+      {/* Spell Checker */}
+      <EditorToolbarToggle
+        icon={IconTextSpellcheck}
+        label="Spell Check"
+        onClick={() => {
+          if (!editor) {
+            return;
+          }
+
+          // Toggle spellcheck attribute on the editor element
+          const editorElement = editor.view.dom as HTMLElement;
+          const currentSpellcheck = editorElement.getAttribute("spellcheck");
+
+          if (currentSpellcheck === "true") {
+            editorElement.setAttribute("spellcheck", "false");
+          } else {
+            editorElement.setAttribute("spellcheck", "true");
+          }
+
+          // Force browser to re-check spelling by blurring and refocusing
+          editor.commands.blur();
+          setTimeout(() => {
+            editor.commands.focus();
+          }, 0);
+        }}
       />
 
       {/* Separator */}

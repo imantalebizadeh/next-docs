@@ -14,7 +14,7 @@ import {
   IconList,
   IconListCheck,
   IconListNumbers,
-  IconMessageCircle,
+  IconMessagePlus,
   IconPrinter,
   IconStrikethrough,
   IconUnderline,
@@ -27,10 +27,10 @@ import { EditorToolbarFontFamilyDropdown } from "./editor/editor-toolbar-fontfam
 import { EditorToolbarFontSizeDropdown } from "./editor/editor-toolbar-fontsize-dropdown";
 import { EditorToolbarHeadingDropdown } from "./editor/editor-toolbar-heading-dropdown";
 import { EditorToolbarImageDropdown } from "./editor/editor-toolbar-image-dropdown";
+import { EditorToolbarLineHeightDropdown } from "./editor/editor-toolbar-line-height-dropdown";
 import { EditorToolbarLinkButton } from "./editor/editor-toolbar-link-button";
 import { EditorToolbarToggle } from "./editor/editor-toolbar-toggle";
 import { Separator } from "./ui/separator";
-import { EditorToolbarLineHeightDropdown } from "./editor/editor-toolbar-line-height-dropdown";
 
 export function EditorToolbar({ editor }: { editor: Editor | null }) {
   const editorState = useEditorState({
@@ -165,7 +165,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
       {/* Add Comment Button */}
       <EditorToolbarButton
-        icon={IconMessageCircle}
+        icon={IconMessagePlus}
         label="Add Comment"
         onClick={() => {
           // TODO: Add comment

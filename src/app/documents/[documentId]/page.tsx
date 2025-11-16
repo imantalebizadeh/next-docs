@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Editor } from "@/components/editor";
+import { DocumentHeader } from "@/components/layout/document-header";
 
 export const metadata: Metadata = {
   title: "Document",
@@ -13,7 +14,7 @@ export default async function DocumentPage({
 
   return (
     <div className="min-h-screen bg-muted">
-      <h1 className="font-bold text-2xl">Document {documentId}</h1>
+      <DocumentHeader />
       <Editor />
     </div>
   );

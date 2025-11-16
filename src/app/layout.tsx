@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 
 import "@/styles/globals.css";
 
+import { Providers } from "@/providers";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,7 +36,9 @@ export default function RootLayout({
           "flex min-h-screen flex-col antialiased"
         )}
       >
-        <main className="flex-1">{children}</main>
+        <main className="flex-1">
+          <Providers>{children}</Providers>
+        </main>
       </body>
     </html>
   );

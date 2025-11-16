@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import {
   IconArrowBackUp,
   IconArrowForwardUp,
@@ -54,7 +56,10 @@ export function DocumentHeader() {
   return (
     <header className="flex items-center gap-2 bg-background p-2">
       {/* App Logo */}
-      <Logo className="size-12" />
+      <Link href="/">
+        <Logo className="size-12" />
+      </Link>
+
       <div className="flex flex-col">
         {/* Document name */}
         <div className="flex items-center gap-2">

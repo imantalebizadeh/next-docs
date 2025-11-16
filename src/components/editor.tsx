@@ -8,6 +8,7 @@ import { extensions } from "@/constants/extensions";
 
 import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
+import { useEditorStore } from "@/providers/editor-provider";
 
 export function Editor() {
   const containerRef = useRef<ComponentRef<typeof EditorContent>>(null);
@@ -28,6 +29,8 @@ export function Editor() {
     bottom: number;
   } | null>(null);
 
+  const setEditor = useEditorStore((store) => store.setEditor);
+
   const editor = useEditor({
     content: "Hello World",
     extensions,
@@ -39,6 +42,18 @@ export function Editor() {
     },
     immediatelyRender: false,
     autofocus: true,
+    onCreate: (props) => {
+      setEditor(props.editor);
+    },
+    onUpdate: (props) => {
+      setEditor(props.editor);
+    },
+    onTransaction: (props) => {
+      setEditor(props.editor);
+    },
+    onDestroy: () => {
+      setEditor(null);
+    },
   });
 
   // Update container width when it changes

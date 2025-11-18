@@ -10,6 +10,8 @@
     "lint:fix": "bunx ultracite fix"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.35.2",
+    "@clerk/themes": "^2.4.37",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",

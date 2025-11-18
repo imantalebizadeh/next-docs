@@ -28,8 +28,8 @@ export function TemplatesSection() {
               <Link href={`/documents/${template.id}`} key={template.id}>
                 <CarouselItem className="w-44">
                   <div className="space-y-2">
-                    <Card className="cursor-pointer rounded-none shadow-none transition-colors hover:border-primary">
-                      <CardContent>
+                    <Card className="cursor-pointer rounded-none py-0 shadow-none transition-colors hover:border-primary">
+                      <CardContent className="px-0">
                         <Image
                           src={template.image}
                           alt={template.title}

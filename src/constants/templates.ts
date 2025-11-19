@@ -1,4 +1,10 @@
-export const templates = [
+export type Template = {
+  id: number;
+  title: string;
+  image: string;
+};
+
+export const templates: Template[] = [
   {
     id: 1,
     title: "Blank Document",

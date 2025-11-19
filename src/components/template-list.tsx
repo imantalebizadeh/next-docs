@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import {
   Carousel,
   CarouselContent,
@@ -20,13 +18,11 @@ export function TemplateList({ templates }: { templates: Template[] }) {
       }}
       className="w-full max-w-6xl"
     >
-      <CarouselContent>
+      <CarouselContent className="w-44">
         {templates.map((template) => (
-          <Link href={`/documents/${template.id}`} key={template.id}>
-            <CarouselItem className="w-44">
-              <TemplateItem template={template} />
-            </CarouselItem>
-          </Link>
+          <CarouselItem key={template.id}>
+            <TemplateItem template={template} />
+          </CarouselItem>
         ))}
       </CarouselContent>
       <CarouselPrevious />

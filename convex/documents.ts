@@ -34,15 +34,20 @@ export const update = mutation({
     content: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new ConvexError("Unauthorized");
-    }
-
     await ctx.db.patch(args.documentId, {
       title: args.title,
       content: args.content,
     });
+  },
+});
+
+// Delete a document mutation
+export const remove = mutation({
+  args: {
+    documentId: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.documentId);
   },
 });
 

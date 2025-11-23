@@ -1,7 +1,6 @@
 "use client";
 
 import { IconSearch, IconX } from "@tabler/icons-react";
-import { parseAsString, useQueryState } from "nuqs";
 
 import {
   InputGroup,
@@ -10,11 +9,10 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
+import { useSearchParams } from "@/hooks/use-search-params";
+
 export function SearchInput() {
-  const [search, setSearch] = useQueryState(
-    "search",
-    parseAsString.withDefault("")
-  );
+  const { search, setSearch } = useSearchParams();
 
   return (
     <div className="mx-auto w-full max-w-xl">

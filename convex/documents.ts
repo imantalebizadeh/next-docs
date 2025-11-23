@@ -55,19 +55,29 @@ export const remove = mutation({
 export const list = query({
   args: {
     paginationOpts: paginationOptsValidator,
+    search: v.optional(v.string()),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, { paginationOpts, search }) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new ConvexError("Unauthorized");
     }
 
-    const documents = await ctx.db
+    // If search is provided, search for documents
+    if (search) {
+      return await ctx.db
+        .query("documents")
+        .withSearchIndex("search_title", (q) =>
+          q.search("title", search).eq("ownerId", identity.subject)
+        )
+        .paginate(paginationOpts);
+    }
+
+    // Otherwise, return all documents for the current user
+    return await ctx.db
       .query("documents")
       .withIndex("by_owner", (q) => q.eq("ownerId", identity.subject))
       .order("desc")
-      .paginate(args.paginationOpts);
-
-    return documents;
+      .paginate(paginationOpts);
   },
 });

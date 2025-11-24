@@ -16,10 +16,13 @@ export const create = mutation({
     }
 
     const userId = identity.subject;
+    const orgId = (identity.org_id ?? undefined) as string | undefined;
     const documentId = await ctx.db.insert("documents", {
       title: args.title,
       content: args.content,
       ownerId: userId,
+      organizationId: orgId,
+      updatedAt: new Date().toISOString(),
     });
 
     return documentId;
@@ -37,6 +40,7 @@ export const update = mutation({
     await ctx.db.patch(args.documentId, {
       title: args.title,
       content: args.content,
+      updatedAt: new Date().toISOString(),
     });
   },
 });
@@ -63,6 +67,18 @@ export const list = query({
       throw new ConvexError("Unauthorized");
     }
 
+    const orgId = identity.org_id as string | undefined;
+
+    // If search is provided and orgId is provided, search for documents in the organization
+    if (search && orgId) {
+      return await ctx.db
+        .query("documents")
+        .withSearchIndex("search_title", (q) =>
+          q.search("title", search).eq("organizationId", orgId)
+        )
+        .paginate(paginationOpts);
+    }
+
     // If search is provided, search for documents
     if (search) {
       return await ctx.db
@@ -70,6 +86,15 @@ export const list = query({
         .withSearchIndex("search_title", (q) =>
           q.search("title", search).eq("ownerId", identity.subject)
         )
+        .paginate(paginationOpts);
+    }
+
+    // If orgId is provided, return all documents for the organization
+    if (orgId) {
+      return await ctx.db
+        .query("documents")
+        .withIndex("by_organization", (q) => q.eq("organizationId", orgId))
+        .order("desc")
         .paginate(paginationOpts);
     }
 

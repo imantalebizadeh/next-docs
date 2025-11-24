@@ -7,8 +7,8 @@ import {
   IconFileInvoice,
   IconUserCircle,
 } from "@tabler/icons-react";
-import { formatDistanceToNowStrict, format } from "date-fns";
 import { usePaginatedQuery } from "convex/react";
+import { format, formatDistanceToNowStrict } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +20,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { useSearchParams } from "@/hooks/use-search-params";
+
 import { cn } from "@/lib/utils";
 
 import { api } from "../../../convex/_generated/api";
 import { DocumentsTableRowActions } from "./documents-table-row-actions";
 import { DocumentsTableSkeleton } from "./documents-table-skeleton";
-import { useSearchParams } from "@/hooks/use-search-params";
 
 export function DocumentsTable() {
   const { search } = useSearchParams();

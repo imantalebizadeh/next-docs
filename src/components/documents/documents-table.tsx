@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 
-import { IconFileInvoice } from "@tabler/icons-react";
+import {
+  IconBuilding,
+  IconFileInvoice,
+  IconUserCircle,
+} from "@tabler/icons-react";
+import { formatDistanceToNowStrict, format } from "date-fns";
 import { usePaginatedQuery } from "convex/react";
 
 import { Button } from "@/components/ui/button";
@@ -68,9 +73,29 @@ export function DocumentsTable() {
                     </Link>
                   </div>
                 </TableCell>
-                <TableCell>John Doe</TableCell>
-                <TableCell>2021-01-01</TableCell>
-                <TableCell>2021-01-01</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-x-2">
+                    {document.organizationId ? (
+                      <>
+                        <IconBuilding className="size-4" />
+                        Organization
+                      </>
+                    ) : (
+                      <>
+                        <IconUserCircle className="size-4" />
+                        Personal
+                      </>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {formatDistanceToNowStrict(document.updatedAt, {
+                    addSuffix: true,
+                  })}
+                </TableCell>
+                <TableCell>
+                  {format(document._creationTime, "MMM d, yyyy")}
+                </TableCell>
                 <TableCell>
                   <DocumentsTableRowActions document={document} />
                 </TableCell>

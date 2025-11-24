@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { UserButton } from "@clerk/nextjs";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
 import { Logo } from "../logo";
 import { Skeleton } from "../ui/skeleton";
@@ -19,7 +19,10 @@ export function Header() {
       <SearchInput />
 
       {/* User Button */}
-      <UserButton fallback={<Skeleton className="size-8 rounded-full" />} />
+      <div className="flex items-center gap-2">
+        <OrganizationSwitcher />
+        <UserButton fallback={<Skeleton className="size-8 rounded-full" />} />
+      </div>
     </header>
   );
 }

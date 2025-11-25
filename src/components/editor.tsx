@@ -2,13 +2,17 @@
 
 import { type ComponentRef, useEffect, useRef, useState } from "react";
 
+import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 import { EditorContent, useEditor } from "@tiptap/react";
+
+import { Threads } from "@/components/liveblocks/threads";
 
 import { extensions } from "@/constants/extensions";
 
+import { useEditorStore } from "@/providers/editor-provider";
+
 import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
-import { useEditorStore } from "@/providers/editor-provider";
 
 export function Editor() {
   const containerRef = useRef<ComponentRef<typeof EditorContent>>(null);
@@ -30,10 +34,11 @@ export function Editor() {
   } | null>(null);
 
   const setEditor = useEditorStore((store) => store.setEditor);
+  const liveblocks = useLiveblocksExtension();
 
   const editor = useEditor({
     content: "Hello World",
-    extensions,
+    extensions: [...extensions, liveblocks],
     editorProps: {
       attributes: {
         class:
@@ -149,6 +154,7 @@ export function Editor() {
       </div>
       <div className="relative mb-4 min-h-0 flex-1 px-2 lg:px-0">
         <EditorContent ref={containerRef} editor={editor} />
+        <Threads editor={editor} />
         {guideLinePosition !== null && guideLineBounds && (
           <div
             className="pointer-events-none fixed z-50 w-px bg-primary/60"

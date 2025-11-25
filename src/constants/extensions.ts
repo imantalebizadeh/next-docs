@@ -13,6 +13,8 @@ export const extensions: Extensions = [
       autolink: false,
       defaultProtocol: "https",
     },
+    // The Liveblocks extension comes with its own history handling
+    undoRedo: false,
   }),
   TextStyleKit,
   TaskList,

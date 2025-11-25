@@ -41,6 +41,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       backgroundColor:
         ctx.editor?.getAttributes("textStyle").backgroundColor || "#ffffff",
       isHighlight: ctx.editor?.isActive("highlight"),
+      isCommentActive: ctx.editor?.isActive("liveblocksCommentMark"),
     }),
   });
 
@@ -192,13 +193,11 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       <EditorToolbarImageDropdown editor={editor} />
 
       {/* Add Comment Button */}
-      <EditorToolbarButton
+      <EditorToolbarToggle
         icon={IconMessagePlus}
         label="Add Comment"
-        onClick={() => {
-          // TODO: Add comment
-          console.log("Add Comment");
-        }}
+        pressed={editorState?.isCommentActive}
+        onClick={() => editor?.chain().focus().addPendingComment().run()}
       />
 
       {/* Separator */}

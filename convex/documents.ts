@@ -51,6 +51,27 @@ export const remove = mutation({
     documentId: v.id("documents"),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("Unauthorized");
+    }
+
+    const document = await ctx.db.get(args.documentId);
+    if (!document) {
+      throw new ConvexError("Document not found");
+    }
+
+    if (identity.subject !== document.ownerId) {
+      throw new ConvexError("You are not authorized to delete this document");
+    }
+
+    if (
+      document.organizationId &&
+      identity.org_id !== document.organizationId
+    ) {
+      throw new ConvexError("You are not authorized to delete this document");
+    }
+
     await ctx.db.delete(args.documentId);
   },
 });

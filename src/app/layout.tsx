@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 
+import "@liveblocks/react-ui/styles.css";
+import "@liveblocks/react-tiptap/styles.css";
 import "@/styles/globals.css";
 
 import { Providers } from "@/providers";

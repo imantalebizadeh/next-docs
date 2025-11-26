@@ -6,6 +6,9 @@ export const env = createEnv({
     NEXT_PUBLIC_CONVEX_URL: z.url(),
     NEXT_PUBLIC_APP_URL: z.url(),
   },
+  server: {
+    LIVEBLOCKS_SECRET_KEY: z.string(),
+  },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,

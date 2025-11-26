@@ -18,11 +18,7 @@ export function Room({
   documentId: string;
 }) {
   return (
-    <LiveblocksProvider
-      publicApiKey={
-        "pk_dev_1dOWzYtVvImSMhKZr-FgVEk6gFoXJuK-PpvszULfIveugDVUZjsY0HLTpHXdwjNr"
-      }
-    >
+    <LiveblocksProvider authEndpoint="/api/liveblocks">
       <RoomProvider id={documentId}>
         <ClientSideSuspense fallback={<DocumentSkeleton />}>
           {children}

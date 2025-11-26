@@ -8,6 +8,8 @@ import {
   RoomProvider,
 } from "@liveblocks/react/suspense";
 
+import { DocumentSkeleton } from "@/components/documents/document-skeleton";
+
 export function Room({
   children,
   documentId,
@@ -22,7 +24,7 @@ export function Room({
       }
     >
       <RoomProvider id={documentId}>
-        <ClientSideSuspense fallback={<div>Loading…</div>}>
+        <ClientSideSuspense fallback={<DocumentSkeleton />}>
           {children}
         </ClientSideSuspense>
       </RoomProvider>

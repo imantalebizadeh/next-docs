@@ -127,3 +127,11 @@ export const list = query({
       .paginate(paginationOpts);
   },
 });
+
+// Get a document by its id
+export const getById = query({
+  args: {
+    documentId: v.id("documents"),
+  },
+  handler: async (ctx, args) => await ctx.db.get(args.documentId),
+});

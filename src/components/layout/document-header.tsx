@@ -40,6 +40,8 @@ import {
   EditableInput,
   EditablePreview,
 } from "../ui/editable";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { Skeleton } from "../ui/skeleton";
 
 export function DocumentHeader() {
   const editor = useEditorStore((store) => store.editor);
@@ -171,6 +173,12 @@ export function DocumentHeader() {
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
+      </div>
+
+      {/* User and organization switcher */}
+      <div className="ml-auto flex items-center gap-2">
+        <OrganizationSwitcher />
+        <UserButton fallback={<Skeleton className="size-8 rounded-full" />} />
       </div>
     </header>
   );

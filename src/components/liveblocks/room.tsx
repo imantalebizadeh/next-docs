@@ -1,6 +1,6 @@
 "use client";
 
-import { use, type ReactNode } from "react";
+import { type ReactNode, use } from "react";
 
 import {
   ClientSideSuspense,
@@ -9,6 +9,9 @@ import {
 } from "@liveblocks/react/suspense";
 
 import { DocumentSkeleton } from "@/components/documents/document-skeleton";
+
+import type { Id } from "../../../convex/_generated/dataModel";
+import { getDocumentsByIds } from "@/data/documents";
 
 export function Room({
   children,
@@ -25,7 +28,17 @@ export function Room({
 
   return (
     <LiveblocksProvider
-      authEndpoint="/api/liveblocks"
+      throttle={16}
+      authEndpoint={async () => {
+        const room = documentId;
+
+        const response = await fetch("/api/liveblocks", {
+          method: "POST",
+          body: JSON.stringify({ room }),
+        });
+
+        return response.json();
+      }}
       // biome-ignore lint/nursery/useConsistentArrowReturn: return statement is needed for better readability
       resolveUsers={({ userIds }) => {
         return (
@@ -43,6 +56,13 @@ export function Room({
         }
 
         return users.map((user) => user.id);
+      }}
+      resolveRoomsInfo={async ({ roomIds }) => {
+        const documents = await getDocumentsByIds(roomIds as Id<"documents">[]);
+        return documents.map((document) => ({
+          name: document.title,
+          url: `/documents/${document._id}`,
+        }));
       }}
     >
       <RoomProvider id={documentId}>

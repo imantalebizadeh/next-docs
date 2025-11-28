@@ -17,11 +17,11 @@ export default async function DocumentPage({
   const usersPromise = getUsers();
 
   return (
-    <div className="min-h-screen bg-muted">
-      <DocumentHeader />
-      <Room documentId={documentId} usersPromise={usersPromise}>
+    <Room documentId={documentId} usersPromise={usersPromise}>
+      <div className="min-h-screen bg-muted">
+        <DocumentHeader />
         <Editor />
-      </Room>
-    </div>
+      </div>
+    </Room>
   );
 }

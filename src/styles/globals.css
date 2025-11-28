@@ -215,3 +215,8 @@
     @apply outline-1 outline-border/40 rounded-sm;
   }
 }
+
+/* Liveblocks notifications styles */
+div[data-radix-popper-content-wrapper] {
+  z-index: 1000 !important;
+}

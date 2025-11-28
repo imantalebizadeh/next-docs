@@ -44,7 +44,7 @@ function NotificationsButton() {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon-sm"
           className="relative rounded-full"
         >
@@ -58,7 +58,7 @@ function NotificationsButton() {
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-full max-w-lg p-px">
-        <ScrollArea className="max-h-72">
+        <ScrollArea className="h-72">
           <ClientSideSuspense fallback={<NotificationsSkeleton />}>
             <Notifications />
           </ClientSideSuspense>

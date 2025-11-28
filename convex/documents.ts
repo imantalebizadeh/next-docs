@@ -1,6 +1,7 @@
 import { paginationOptsValidator } from "convex/server";
 import { ConvexError, v } from "convex/values";
 
+import type { Doc } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 
 // Create a new document mutation
@@ -125,6 +126,27 @@ export const list = query({
       .withIndex("by_owner", (q) => q.eq("ownerId", identity.subject))
       .order("desc")
       .paginate(paginationOpts);
+  },
+});
+
+// List documents by their ids
+export const listByIds = query({
+  args: {
+    documentIds: v.array(v.id("documents")),
+  },
+  handler: async (ctx, args) => {
+    const documents: Pick<Doc<"documents">, "_id" | "title">[] = [];
+
+    for (const documentId of args.documentIds) {
+      const document = await ctx.db.get(documentId);
+      if (document) {
+        documents.push({ _id: document._id, title: document.title });
+      } else {
+        documents.push({ _id: documentId, title: "Removed" });
+      }
+    }
+
+    return documents;
   },
 });
 

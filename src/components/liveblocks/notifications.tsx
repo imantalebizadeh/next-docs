@@ -71,7 +71,7 @@ function NotificationsButton() {
 function NotificationsSkeleton() {
   return (
     <div className="w-lg divide-y">
-      {Array.from({ length: 5 }).map((_, index) => (
+      {Array.from({ length: 4 }).map((_, index) => (
         <div
           key={`notification-skeleton-${index + 1}`}
           className="flex gap-3 p-3"

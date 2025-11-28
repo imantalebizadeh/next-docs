@@ -42,6 +42,9 @@ import {
 } from "../ui/editable";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { Skeleton } from "../ui/skeleton";
+import { ClientSideSuspense } from "@liveblocks/react";
+import { NotificationsButton } from "../liveblocks/notifications";
+import { Separator } from "../ui/separator";
 
 export function DocumentHeader() {
   const editor = useEditorStore((store) => store.editor);
@@ -177,7 +180,26 @@ export function DocumentHeader() {
 
       {/* User and organization switcher */}
       <div className="ml-auto flex items-center gap-2">
-        <OrganizationSwitcher />
+        {/* Notifications button */}
+        <ClientSideSuspense
+          fallback={<Skeleton className="size-8 rounded-full" />}
+        >
+          <NotificationsButton />
+        </ClientSideSuspense>
+        {/* Separator */}
+        <Separator
+          orientation="vertical"
+          className="data-[orientation=vertical]:h-4"
+        />
+        {/* Organization switcher */}
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterLeaveOrganizationUrl="/"
+          afterSelectOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+          fallback={<Skeleton className="h-8 w-28 rounded-md" />}
+        />
+        {/* User button */}
         <UserButton fallback={<Skeleton className="size-8 rounded-full" />} />
       </div>
     </header>

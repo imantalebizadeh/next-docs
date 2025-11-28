@@ -20,7 +20,13 @@ export function Header() {
 
       {/* User Button */}
       <div className="flex items-center gap-2">
-        <OrganizationSwitcher />
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterLeaveOrganizationUrl="/"
+          afterSelectOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+          fallback={<Skeleton className="h-8 w-28 rounded-md" />}
+        />
         <UserButton fallback={<Skeleton className="size-8 rounded-full" />} />
       </div>
     </header>

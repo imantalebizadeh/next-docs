@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { ClientSideSuspense, useOthers } from "@liveblocks/react";
 import {
   IconArrowBackUp,
   IconArrowForwardUp,
@@ -33,6 +35,8 @@ import {
 
 import { useEditorStore } from "@/providers/editor-provider";
 
+import { AvatarStack, AvatarStackSkeleton } from "../liveblocks/avatar-stack";
+import { NotificationsButton } from "../liveblocks/notifications";
 import { Logo } from "../logo";
 import {
   Editable,
@@ -40,13 +44,11 @@ import {
   EditableInput,
   EditablePreview,
 } from "../ui/editable";
-import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
-import { Skeleton } from "../ui/skeleton";
-import { ClientSideSuspense } from "@liveblocks/react";
-import { NotificationsButton } from "../liveblocks/notifications";
 import { Separator } from "../ui/separator";
+import { Skeleton } from "../ui/skeleton";
 
 export function DocumentHeader() {
+  const users = useOthers();
   const editor = useEditorStore((store) => store.editor);
   const { theme, setTheme } = useTheme();
 
@@ -180,17 +182,20 @@ export function DocumentHeader() {
 
       {/* User and organization switcher */}
       <div className="ml-auto flex items-center gap-2">
-        {/* Notifications button */}
-        <ClientSideSuspense
-          fallback={<Skeleton className="size-8 rounded-full" />}
-        >
-          <NotificationsButton />
+        {/* Avatar stack */}
+        <ClientSideSuspense fallback={<AvatarStackSkeleton />}>
+          <AvatarStack />
         </ClientSideSuspense>
+
         {/* Separator */}
-        <Separator
-          orientation="vertical"
-          className="data-[orientation=vertical]:h-4"
-        />
+        {/* If there are other users in the room, show a separator */}
+        {users.length > 0 && (
+          <Separator
+            orientation="vertical"
+            className="-mr-2 data-[orientation=vertical]:h-7"
+          />
+        )}
+
         {/* Organization switcher */}
         <OrganizationSwitcher
           afterCreateOrganizationUrl="/"
@@ -199,6 +204,14 @@ export function DocumentHeader() {
           afterSelectPersonalUrl="/"
           fallback={<Skeleton className="h-8 w-28 rounded-md" />}
         />
+
+        {/* Notifications button */}
+        <ClientSideSuspense
+          fallback={<Skeleton className="size-8 rounded-full" />}
+        >
+          <NotificationsButton />
+        </ClientSideSuspense>
+
         {/* User button */}
         <UserButton fallback={<Skeleton className="size-8 rounded-full" />} />
       </div>

@@ -8,21 +8,21 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { Toaster } from "@/components/ui/sonner";
 
-import { ConvexProvider } from "./convex-provider";
+import { ConvexReactQueryProvider } from "./convex-react-query-provider";
 import { EditorStoreProvider } from "./editor-provider";
 import { ThemeProvider } from "./theme-provider";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <ClerkProvider appearance={{ theme: shadcn }}>
-      <ConvexProvider>
+      <ConvexReactQueryProvider>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <EditorStoreProvider>
             <NuqsAdapter>{children}</NuqsAdapter>
           </EditorStoreProvider>
           <Toaster />
         </ThemeProvider>
-      </ConvexProvider>
+      </ConvexReactQueryProvider>
     </ClerkProvider>
   );
 }

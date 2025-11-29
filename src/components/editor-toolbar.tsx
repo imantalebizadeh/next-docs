@@ -1,3 +1,5 @@
+import { LiveObject } from "@liveblocks/client";
+import { useMutation } from "@liveblocks/react/suspense";
 import {
   IconAlignCenter,
   IconAlignJustified,
@@ -16,6 +18,7 @@ import {
   IconListNumbers,
   IconMessagePlus,
   IconPrinter,
+  IconRestore,
   IconStrikethrough,
   IconTextSpellcheck,
   IconUnderline,
@@ -44,6 +47,10 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       isCommentActive: ctx.editor?.isActive("liveblocksCommentMark"),
     }),
   });
+
+  const resetDocumentMargins = useMutation(({ storage }) => {
+    storage.set("documentMargins", new LiveObject({ left: 56, right: 56 }));
+  }, []);
 
   return (
     <div className="flex items-center gap-px overflow-x-auto border-border border-t border-b bg-background px-4 py-1 lg:justify-center print:hidden">
@@ -269,6 +276,13 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
       {/* Line Height Dropdown */}
       <EditorToolbarLineHeightDropdown editor={editor} />
+
+      {/* Reset Document Margins Button */}
+      <EditorToolbarButton
+        icon={IconRestore}
+        label="Reset Document Margins"
+        onClick={() => resetDocumentMargins()}
+      />
     </div>
   );
 }

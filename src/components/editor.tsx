@@ -2,6 +2,8 @@
 
 import { type ComponentRef, useEffect, useRef, useState } from "react";
 
+import { LiveObject } from "@liveblocks/client";
+import { useMutation, useStorage } from "@liveblocks/react/suspense";
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 import { EditorContent, useEditor } from "@tiptap/react";
 
@@ -15,9 +17,31 @@ import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
 
 export function Editor() {
+  const liveblocks = useLiveblocksExtension();
+
+  const setLeftMargin = useMutation(({ storage }, margin: number) => {
+    storage.set(
+      "documentMargins",
+      new LiveObject({
+        left: margin,
+        right: storage.get("documentMargins").get("right"),
+      })
+    );
+  }, []);
+
+  const setRightMargin = useMutation(({ storage }, margin: number) => {
+    storage.set(
+      "documentMargins",
+      new LiveObject({
+        left: storage.get("documentMargins").get("left"),
+        right: margin,
+      })
+    );
+  }, []);
+
+  const margins = useStorage((root) => root.documentMargins);
+
   const containerRef = useRef<ComponentRef<typeof EditorContent>>(null);
-  const [leftMargin, setLeftMargin] = useState(56); // Default 56px (px-14)
-  const [rightMargin, setRightMargin] = useState(56); // Default 56px (px-14)
   const [containerWidth, setContainerWidth] = useState<number | undefined>(
     undefined
   );
@@ -34,7 +58,6 @@ export function Editor() {
   } | null>(null);
 
   const setEditor = useEditorStore((store) => store.setEditor);
-  const liveblocks = useLiveblocksExtension();
 
   const editor = useEditor({
     content: "Hello World",
@@ -88,9 +111,9 @@ export function Editor() {
     }
 
     const editorElement = editor.view.dom as HTMLElement;
-    editorElement.style.paddingLeft = `${leftMargin}px`;
-    editorElement.style.paddingRight = `${rightMargin}px`;
-  }, [editor, leftMargin, rightMargin]);
+    editorElement.style.paddingLeft = `${margins.left}px`;
+    editorElement.style.paddingRight = `${margins.right}px`;
+  }, [editor, margins.left, margins.right]);
 
   // Update guide line position when dragging
   useEffect(() => {
@@ -141,8 +164,8 @@ export function Editor() {
       <EditorToolbar editor={editor} />
       <div className="border-border border-b print:hidden">
         <EditorRuler
-          leftMargin={leftMargin}
-          rightMargin={rightMargin}
+          leftMargin={margins.left}
+          rightMargin={margins.right}
           onLeftMarginChange={setLeftMargin}
           onRightMarginChange={setRightMargin}
           containerWidth={containerWidth}

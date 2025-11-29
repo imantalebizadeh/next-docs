@@ -2,6 +2,7 @@
 
 import { type ReactNode, use } from "react";
 
+import { LiveObject } from "@liveblocks/client";
 import {
   ClientSideSuspense,
   LiveblocksProvider,
@@ -65,7 +66,12 @@ export function Room({
         }));
       }}
     >
-      <RoomProvider id={documentId}>
+      <RoomProvider
+        id={documentId}
+        initialStorage={{
+          documentMargins: new LiveObject({ left: 56, right: 56 }),
+        }}
+      >
         <ClientSideSuspense fallback={<DocumentSkeleton />}>
           {children}
         </ClientSideSuspense>

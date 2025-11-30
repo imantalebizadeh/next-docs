@@ -1,12 +1,12 @@
-import { useState } from "react";
-
+import { useConvexMutation } from "@convex-dev/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconX } from "@tabler/icons-react";
-import { useMutation } from "convex/react";
+import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -21,11 +21,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
-import { Button } from "../ui/button";
-import { Spinner } from "../ui/spinner";
 
 const formSchema = z.object({
   title: z
@@ -37,7 +36,7 @@ const formSchema = z.object({
 type RenameDocumentModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  documentId: string;
+  documentId: Id<"documents">;
   documentTitle: string;
 };
 
@@ -47,30 +46,28 @@ export function RenameDocumentModal({
   documentId,
   documentTitle,
 }: RenameDocumentModalProps) {
-  const [isPending, setIsPending] = useState(false);
-  const updateDocument = useMutation(api.documents.update);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { title: documentTitle },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsPending(true);
-    try {
-      await updateDocument({
-        documentId: documentId as Id<"documents">,
-        title: data.title,
-      });
-
+  const updateDocumentMutation = useMutation({
+    mutationFn: useConvexMutation(api.documents.update),
+    onSuccess: () => {
       toast.success("Document title changed successfully");
       onOpenChange(false);
-    } catch (error) {
+    },
+    onError: (error) => {
       console.log(error);
       toast.error("Failed to change document title");
-    } finally {
-      setIsPending(false);
-    }
+    },
+  });
+
+  function onSubmit({ title }: z.infer<typeof formSchema>) {
+    updateDocumentMutation.mutate({
+      documentId,
+      title,
+    });
   }
 
   return (
@@ -110,9 +107,12 @@ export function RenameDocumentModal({
               <Button
                 type="submit"
                 form="rename-document-form"
-                disabled={isPending || form.watch("title") === documentTitle}
+                disabled={
+                  updateDocumentMutation.isPending ||
+                  form.watch("title") === documentTitle
+                }
               >
-                {isPending && <Spinner />}
+                {updateDocumentMutation.isPending && <Spinner />}
                 Save
               </Button>
             </Field>

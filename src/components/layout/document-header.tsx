@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import { useState } from "react";
 
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { ClientSideSuspense, useOthers } from "@liveblocks/react";
 import {
   IconArrowBackUp,
@@ -11,20 +15,18 @@ import {
   IconEdit,
   IconFileExport,
   IconFileInvoice,
-  IconPalette,
   IconPrinter,
   IconTable,
-  IconTrash,
 } from "@tabler/icons-react";
-import { useTheme } from "next-themes";
+import { useMutation } from "@tanstack/react-query";
+import { type Preloaded, usePreloadedQuery } from "convex/react";
+import { toast } from "sonner";
 
 import {
   Menubar,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
   MenubarSeparator,
   MenubarShortcut,
   MenubarSub,
@@ -33,11 +35,20 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 
+import {
+  exportAsHTML,
+  exportAsJSON,
+  exportAsText,
+  insertTable,
+} from "@/lib/editor";
+
 import { useEditorStore } from "@/providers/editor-provider";
 
+import { api } from "../../../convex/_generated/api";
 import { AvatarStack, AvatarStackSkeleton } from "../liveblocks/avatar-stack";
 import { NotificationsButton } from "../liveblocks/notifications";
 import { Logo } from "../logo";
+import { RenameDocumentModal } from "../modals/rename-document-modal";
 import {
   Editable,
   EditableArea,
@@ -46,22 +57,46 @@ import {
 } from "../ui/editable";
 import { Separator } from "../ui/separator";
 import { Skeleton } from "../ui/skeleton";
+import { Spinner } from "../ui/spinner";
 
-export function DocumentHeader() {
+export function DocumentHeader({
+  preloadedDocument,
+}: {
+  preloadedDocument: Preloaded<typeof api.documents.getById>;
+}) {
+  const [openRenameDocumentModal, setOpenRenameDocumentModal] = useState(false);
+
+  const router = useRouter();
   const users = useOthers();
   const editor = useEditorStore((store) => store.editor);
-  const { theme, setTheme } = useTheme();
 
-  function InsertTable(rows: number, cols: number) {
-    if (!editor) {
-      return;
-    }
+  const document = usePreloadedQuery(preloadedDocument);
 
-    editor.chain().focus().insertTable({ rows, cols }).run();
-  }
+  const createDocumentMutation = useMutation({
+    mutationFn: useConvexMutation(api.documents.create),
+    onSuccess: (data) => {
+      router.push(`/documents/${data}`);
+      toast.success("Document created successfully");
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Failed to create document");
+    },
+  });
+
+  const updateDocumentMutation = useMutation({
+    mutationFn: useConvexMutation(api.documents.update),
+    onSuccess: () => {
+      toast.success("Document updated successfully");
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Failed to update document");
+    },
+  });
 
   return (
-    <header className="flex items-center gap-2 bg-background p-2">
+    <header className="flex items-center gap-2 bg-background p-2 print:hidden">
       {/* App Logo */}
       <Link href="/">
         <Logo className="size-12" />
@@ -71,9 +106,19 @@ export function DocumentHeader() {
         {/* Document name */}
         <div className="flex items-center gap-2">
           <Editable
-            defaultValue="Untitled Document"
             placeholder="Enter the document name here"
+            value={document.title}
+            onValueChange={(value) => {
+              if (value.trim() !== document.title.trim()) {
+                updateDocumentMutation.mutate({
+                  documentId: document._id,
+                  title: value,
+                });
+              }
+            }}
             triggerMode="click"
+            debounce={1000}
+            required
             autosize
           >
             <EditableArea>
@@ -82,14 +127,27 @@ export function DocumentHeader() {
             </EditableArea>
           </Editable>
           {/* Sync status */}
-          <IconCloudCheck className="size-4 text-muted-foreground" />
+          {updateDocumentMutation.isPending ? (
+            <Spinner className="size-4 text-muted-foreground" />
+          ) : (
+            <IconCloudCheck className="size-4 text-muted-foreground" />
+          )}
         </div>
+
         {/* Menu bar */}
         <Menubar className="-ml-2 h-8 border-none p-px shadow-none">
           <MenubarMenu>
             <MenubarTrigger>File</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>
+            <MenubarContent className="print:hidden">
+              <MenubarItem
+                onClick={() =>
+                  createDocumentMutation.mutate({
+                    title: "Untitled Document",
+                    content: "",
+                  })
+                }
+                disabled={createDocumentMutation.isPending}
+              >
                 <IconFileInvoice />
                 New Document
               </MenubarItem>
@@ -99,46 +157,44 @@ export function DocumentHeader() {
                   Export
                 </MenubarSubTrigger>
                 <MenubarSubContent>
-                  <MenubarItem>Pdf</MenubarItem>
-                  <MenubarItem>Word</MenubarItem>
-                  <MenubarItem>Text</MenubarItem>
+                  <MenubarItem
+                    onClick={() =>
+                      exportAsHTML(editor, `${document.title}.html`)
+                    }
+                  >
+                    HTML
+                  </MenubarItem>
+                  <MenubarItem
+                    onClick={() =>
+                      exportAsJSON(editor, `${document.title}.json`)
+                    }
+                  >
+                    JSON
+                  </MenubarItem>
+                  <MenubarItem
+                    onClick={() =>
+                      exportAsText(editor, `${document.title}.txt`)
+                    }
+                  >
+                    Text
+                  </MenubarItem>
                 </MenubarSubContent>
               </MenubarSub>
               <MenubarSeparator />
-              <MenubarItem>
+              <MenubarItem onClick={() => setOpenRenameDocumentModal(true)}>
                 <IconEdit />
                 Rename
               </MenubarItem>
-              <MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem onClick={() => window.print()}>
                 <IconPrinter />
                 Print <MenubarShortcut>⌘P</MenubarShortcut>
-              </MenubarItem>
-              <MenubarSeparator />
-              <MenubarSub>
-                <MenubarSubTrigger className="gap-2">
-                  <IconPalette className="size-4 text-muted-foreground" />
-                  Theme
-                </MenubarSubTrigger>
-                <MenubarSubContent>
-                  <MenubarRadioGroup
-                    value={theme}
-                    onValueChange={(value) => setTheme(value)}
-                  >
-                    <MenubarRadioItem value="light">Light</MenubarRadioItem>
-                    <MenubarRadioItem value="dark">Dark</MenubarRadioItem>
-                    <MenubarRadioItem value="system">System</MenubarRadioItem>
-                  </MenubarRadioGroup>
-                </MenubarSubContent>
-              </MenubarSub>
-              <MenubarItem variant="destructive">
-                <IconTrash />
-                Delete
               </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
           <MenubarMenu>
             <MenubarTrigger>Edit</MenubarTrigger>
-            <MenubarContent>
+            <MenubarContent className="print:hidden">
               <MenubarItem onClick={() => editor?.chain().focus().undo().run()}>
                 <IconArrowBackUp />
                 Undo <MenubarShortcut>⌘Z</MenubarShortcut>
@@ -151,26 +207,26 @@ export function DocumentHeader() {
           </MenubarMenu>
           <MenubarMenu>
             <MenubarTrigger>Insert</MenubarTrigger>
-            <MenubarContent>
+            <MenubarContent className="print:hidden">
               <MenubarSub>
                 <MenubarSubTrigger className="gap-2">
                   <IconTable className="size-4 text-muted-foreground" />
                   Table
                 </MenubarSubTrigger>
                 <MenubarSubContent>
-                  <MenubarItem onClick={() => InsertTable(1, 1)}>
+                  <MenubarItem onClick={() => insertTable(editor, 1, 1)}>
                     1 x 1
                   </MenubarItem>
-                  <MenubarItem onClick={() => InsertTable(2, 2)}>
+                  <MenubarItem onClick={() => insertTable(editor, 2, 2)}>
                     2 x 2
                   </MenubarItem>
-                  <MenubarItem onClick={() => InsertTable(3, 3)}>
+                  <MenubarItem onClick={() => insertTable(editor, 3, 3)}>
                     3 x 3
                   </MenubarItem>
-                  <MenubarItem onClick={() => InsertTable(4, 4)}>
+                  <MenubarItem onClick={() => insertTable(editor, 4, 4)}>
                     4 x 4
                   </MenubarItem>
-                  <MenubarItem onClick={() => InsertTable(5, 5)}>
+                  <MenubarItem onClick={() => insertTable(editor, 5, 5)}>
                     5 x 5
                   </MenubarItem>
                 </MenubarSubContent>
@@ -178,6 +234,14 @@ export function DocumentHeader() {
             </MenubarContent>
           </MenubarMenu>
         </Menubar>
+
+        {/* Rename document modal */}
+        <RenameDocumentModal
+          open={openRenameDocumentModal}
+          onOpenChange={setOpenRenameDocumentModal}
+          documentId={document._id}
+          documentTitle={document.title}
+        />
       </div>
 
       {/* User and organization switcher */}

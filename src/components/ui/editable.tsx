@@ -24,6 +24,8 @@ import { Slot as SlotPrimitive } from "radix-ui";
 
 import { VisuallyHiddenInput } from "@/components/ui/visually-hidden-input";
 
+import { useDebounce } from "@/hooks/use-debounce";
+
 import { useComposedRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/utils";
 
@@ -197,6 +199,12 @@ interface EditableRootProps extends Omit<ComponentProps<"div">, "onSubmit"> {
   readOnly?: boolean;
   required?: boolean;
   invalid?: boolean;
+  /**
+   * Debounce delay in milliseconds for the onValueChange callback.
+   * When set to a positive number, onValueChange will be debounced.
+   * Defaults to 0 (no debounce).
+   */
+  debounce?: number;
 }
 
 function EditableRoot(props: EditableRootProps) {
@@ -207,8 +215,19 @@ function EditableRoot(props: EditableRootProps) {
     editing,
     onValueChange,
     onEditingChange,
+    debounce,
     ...rootProps
   } = props;
+
+  const debouncedOnValueChange = useDebounce(
+    useCallback(
+      (newValue: string) => {
+        onValueChange?.(newValue);
+      },
+      [onValueChange]
+    ),
+    debounce
+  );
 
   const listenersRef = useLazyRef(() => new Set<() => void>());
   const stateRef = useLazyRef<StoreState>(() => ({
@@ -217,8 +236,14 @@ function EditableRoot(props: EditableRootProps) {
   }));
 
   const store = useMemo(
-    () => createStore(listenersRef, stateRef, onValueChange, onEditingChange),
-    [listenersRef, stateRef, onValueChange, onEditingChange]
+    () =>
+      createStore(
+        listenersRef,
+        stateRef,
+        debouncedOnValueChange,
+        onEditingChange
+      ),
+    [listenersRef, stateRef, debouncedOnValueChange, onEditingChange]
   );
 
   return (
@@ -234,7 +259,10 @@ function EditableRoot(props: EditableRootProps) {
 }
 
 function EditableRootImpl(
-  props: Omit<EditableRootProps, "onValueChange" | "onEditingChange">
+  props: Omit<
+    EditableRootProps,
+    "onValueChange" | "onEditingChange" | "debounce"
+  >
 ) {
   const {
     defaultValue = "",

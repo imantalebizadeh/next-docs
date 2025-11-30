@@ -16,7 +16,10 @@ export function TemplateItem({ template }: { template: Template }) {
   const createDocument = useMutation(api.documents.create);
 
   const handleCreateDocument = async () => {
-    const documentId = await createDocument({ title: template.title });
+    const documentId = await createDocument({
+      title: template.title,
+      content: template.initialContent,
+    });
     router.push(`/documents/${documentId}`);
   };
 

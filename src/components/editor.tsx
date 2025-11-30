@@ -15,9 +15,19 @@ import { useEditorStore } from "@/providers/editor-provider";
 
 import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
+import type { api } from "../../convex/_generated/api";
+import { usePreloadedQuery, type Preloaded } from "convex/react";
 
-export function Editor() {
-  const liveblocks = useLiveblocksExtension();
+export function Editor({
+  preloadedDocument,
+}: {
+  preloadedDocument: Preloaded<typeof api.documents.getById>;
+}) {
+  const document = usePreloadedQuery(preloadedDocument);
+  const liveblocks = useLiveblocksExtension({
+    initialContent: document.content,
+    offlineSupport_experimental: true,
+  });
 
   const setLeftMargin = useMutation(({ storage }, margin: number) => {
     storage.set(

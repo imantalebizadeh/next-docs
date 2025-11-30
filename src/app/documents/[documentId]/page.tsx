@@ -49,7 +49,7 @@ export default async function DocumentPage({
     <Room documentId={documentId} usersPromise={usersPromise}>
       <div className="min-h-screen bg-muted">
         <DocumentHeader preloadedDocument={preloadedDocument} />
-        <Editor />
+        <Editor preloadedDocument={preloadedDocument} />
       </div>
     </Room>
   );

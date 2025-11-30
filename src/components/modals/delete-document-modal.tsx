@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { useMutation } from "convex/react";
+import { useConvexMutation } from "@convex-dev/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import {
@@ -21,31 +22,34 @@ import { Spinner } from "../ui/spinner";
 type DeleteDocumentModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  documentId: string;
+  documentId: Id<"documents">;
+  redirectTo?: string;
 };
 
 export function DeleteDocumentModal({
   open,
   onOpenChange,
   documentId,
+  redirectTo,
 }: DeleteDocumentModalProps) {
-  const [isPending, setIsPending] = useState(false);
-  const deleteDocument = useMutation(api.documents.remove);
+  const router = useRouter();
 
-  const handleDelete = async () => {
-    setIsPending(true);
-    try {
-      await deleteDocument({ documentId: documentId as Id<"documents"> });
-
-      onOpenChange(false);
+  const deleteDocumentMutation = useMutation({
+    mutationFn: useConvexMutation(api.documents.remove),
+    onSuccess: () => {
       toast.success("Document deleted successfully");
-    } catch (error) {
+      onOpenChange(false);
+
+      // Redirect to the redirectTo page if it is provided
+      if (redirectTo) {
+        router.push(redirectTo);
+      }
+    },
+    onError: (error) => {
       console.log(error);
       toast.error("Failed to delete document");
-    } finally {
-      setIsPending(false);
-    }
-  };
+    },
+  });
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -61,10 +65,10 @@ export function DeleteDocumentModal({
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
             variant="destructive"
-            onClick={handleDelete}
-            disabled={isPending}
+            onClick={() => deleteDocumentMutation.mutate({ documentId })}
+            disabled={deleteDocumentMutation.isPending}
           >
-            {isPending && <Spinner />}
+            {deleteDocumentMutation.isPending && <Spinner />}
             Continue
           </Button>
         </AlertDialogFooter>

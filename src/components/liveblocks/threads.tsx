@@ -1,13 +1,34 @@
-import { useThreads } from "@liveblocks/react/suspense";
+import { useThreads } from "@liveblocks/react";
 import {
   AnchoredThreads,
   FloatingComposer,
   FloatingThreads,
 } from "@liveblocks/react-tiptap";
+import { IconAlertCircle } from "@tabler/icons-react";
 import type { Editor } from "@tiptap/react";
 
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+
 export function Threads({ editor }: { editor: Editor | null }) {
-  const { threads } = useThreads({ query: { resolved: false } });
+  const { threads, isLoading, error } = useThreads({
+    query: { resolved: false },
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <IconAlertCircle className="size-4" />
+        <AlertTitle>Error loading threads.</AlertTitle>
+        <AlertDescription>
+          <p>{error.message}</p>
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <>

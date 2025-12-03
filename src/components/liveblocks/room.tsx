@@ -29,6 +29,7 @@ export function Room({
 
   return (
     <LiveblocksProvider
+      preventUnsavedChanges
       throttle={16}
       authEndpoint={async () => {
         const room = documentId;

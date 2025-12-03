@@ -7,7 +7,11 @@ import { useState } from "react";
 
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { useConvexMutation } from "@convex-dev/react-query";
-import { ClientSideSuspense, useOthers } from "@liveblocks/react";
+import {
+  ClientSideSuspense,
+  useOthers,
+  useSyncStatus,
+} from "@liveblocks/react";
 import {
   IconArrowBackUp,
   IconArrowForwardUp,
@@ -68,6 +72,7 @@ export function DocumentHeader({
 
   const router = useRouter();
   const users = useOthers();
+  const syncStatus = useSyncStatus({ smooth: true });
   const editor = useEditorStore((store) => store.editor);
 
   const document = usePreloadedQuery(preloadedDocument);
@@ -94,6 +99,9 @@ export function DocumentHeader({
       toast.error("Failed to update document");
     },
   });
+
+  const isSyncing =
+    syncStatus === "synchronizing" || updateDocumentMutation.isPending;
 
   return (
     <header className="flex items-center gap-2 bg-background p-2 print:hidden">
@@ -127,10 +135,13 @@ export function DocumentHeader({
             </EditableArea>
           </Editable>
           {/* Sync status */}
-          {updateDocumentMutation.isPending ? (
-            <Spinner className="size-4 text-muted-foreground" />
+          {isSyncing ? (
+            <Spinner className="size-4 text-muted-foreground" title="Syncing" />
           ) : (
-            <IconCloudCheck className="size-4 text-muted-foreground" />
+            <IconCloudCheck
+              className="size-4 text-muted-foreground"
+              title="Synced"
+            />
           )}
         </div>
 

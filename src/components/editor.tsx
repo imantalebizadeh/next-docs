@@ -6,6 +6,7 @@ import { LiveObject } from "@liveblocks/client";
 import { useMutation, useStorage } from "@liveblocks/react/suspense";
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 import { EditorContent, useEditor } from "@tiptap/react";
+import { type Preloaded, usePreloadedQuery } from "convex/react";
 
 import { Threads } from "@/components/liveblocks/threads";
 
@@ -13,10 +14,9 @@ import { extensions } from "@/constants/extensions";
 
 import { useEditorStore } from "@/providers/editor-provider";
 
+import type { api } from "../../convex/_generated/api";
 import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
-import type { api } from "../../convex/_generated/api";
-import { usePreloadedQuery, type Preloaded } from "convex/react";
 
 export function Editor({
   preloadedDocument,
@@ -24,6 +24,7 @@ export function Editor({
   preloadedDocument: Preloaded<typeof api.documents.getById>;
 }) {
   const document = usePreloadedQuery(preloadedDocument);
+
   const liveblocks = useLiveblocksExtension({
     initialContent: document.content,
     offlineSupport_experimental: true,

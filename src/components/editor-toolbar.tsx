@@ -44,7 +44,6 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       backgroundColor:
         ctx.editor?.getAttributes("textStyle").backgroundColor || "#ffffff",
       isHighlight: ctx.editor?.isActive("highlight"),
-      isCommentActive: ctx.editor?.isActive("liveblocksCommentMark"),
     }),
   });
 
@@ -53,7 +52,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
   }, []);
 
   return (
-    <div className="flex items-center gap-px overflow-x-auto border-border border-t border-b bg-background px-4 py-1 lg:justify-center print:hidden">
+    <div className="sticky top-0 z-10 flex items-center gap-px overflow-x-auto border-border border-t border-b bg-background px-4 py-1 lg:justify-center print:hidden">
       {/* Undo */}
       <EditorToolbarButton
         icon={IconArrowBackUp}
@@ -200,10 +199,9 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       <EditorToolbarImageDropdown editor={editor} />
 
       {/* Add Comment Button */}
-      <EditorToolbarToggle
+      <EditorToolbarButton
         icon={IconMessagePlus}
         label="Add Comment"
-        pressed={editorState?.isCommentActive}
         onClick={() => editor?.chain().focus().addPendingComment().run()}
       />
 

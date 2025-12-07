@@ -97,7 +97,7 @@ export function RenameDocumentModal({
                     placeholder={documentTitle}
                     autoComplete="off"
                   />
-                  {fieldState.invalid && (
+                  {!!fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
@@ -112,7 +112,7 @@ export function RenameDocumentModal({
                   form.watch("title") === documentTitle
                 }
               >
-                {updateDocumentMutation.isPending && <Spinner />}
+                {!!updateDocumentMutation.isPending && <Spinner />}
                 Save
               </Button>
             </Field>

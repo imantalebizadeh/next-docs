@@ -15,7 +15,7 @@ function AvatarStack() {
     <>
       {users.length > 0 && (
         <div className="-space-x-2 flex items-center">
-          {currentUser && (
+          {!!currentUser && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Avatar className="size-7 ring-2 ring-background">
@@ -49,7 +49,7 @@ function AvatarStack() {
             </Tooltip>
           ))}
 
-          {hasMoreUsers && (
+          {!!hasMoreUsers && (
             <Avatar>
               <AvatarFallback>+{users.length - 3}</AvatarFallback>
             </Avatar>

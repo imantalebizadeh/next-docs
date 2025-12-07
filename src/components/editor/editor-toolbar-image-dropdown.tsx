@@ -101,7 +101,7 @@ function AddImageFromUrlDialog({
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                   />
-                  {fieldState.invalid && (
+                  {!!fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>

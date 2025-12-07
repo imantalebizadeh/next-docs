@@ -31,7 +31,7 @@ export function SearchInput() {
             <IconSearch />
           </InputGroupButton>
         </InputGroupAddon>
-        {search && (
+        {!!search && (
           <InputGroupAddon align="inline-end">
             <InputGroupButton
               variant="ghost"

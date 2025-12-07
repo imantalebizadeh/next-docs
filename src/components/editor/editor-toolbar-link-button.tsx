@@ -121,7 +121,7 @@ export function EditorToolbarLinkButton({ editor }: { editor: Editor | null }) {
                     aria-invalid={fieldState.invalid}
                     autoComplete="off"
                   />
-                  {fieldState.invalid && (
+                  {!!fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
                 </Field>
@@ -131,7 +131,7 @@ export function EditorToolbarLinkButton({ editor }: { editor: Editor | null }) {
               <Button type="submit" size="sm">
                 {editorState?.isLinkActive ? "Update Link" : "Set Link"}
               </Button>
-              {editorState?.isLinkActive && (
+              {!!editorState?.isLinkActive && (
                 <Button
                   type="button"
                   variant="outline"

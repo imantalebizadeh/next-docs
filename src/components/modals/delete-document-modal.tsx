@@ -68,7 +68,7 @@ export function DeleteDocumentModal({
             onClick={() => deleteDocumentMutation.mutate({ documentId })}
             disabled={deleteDocumentMutation.isPending}
           >
-            {deleteDocumentMutation.isPending && <Spinner />}
+            {!!deleteDocumentMutation.isPending && <Spinner />}
             Continue
           </Button>
         </AlertDialogFooter>

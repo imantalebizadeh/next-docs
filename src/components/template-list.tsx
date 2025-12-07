@@ -15,6 +15,7 @@ export function TemplateList({ templates }: { templates: Template[] }) {
     <Carousel
       opts={{
         align: "start",
+        loop: true,
       }}
       className="w-full max-w-6xl"
     >
@@ -25,8 +26,8 @@ export function TemplateList({ templates }: { templates: Template[] }) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="hidden sm:inline-flex" />
+      <CarouselNext className="hidden sm:inline-flex" />
     </Carousel>
   );
 }

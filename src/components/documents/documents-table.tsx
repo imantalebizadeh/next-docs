@@ -38,8 +38,7 @@ export function DocumentsTable() {
   } = usePaginatedQuery(api.documents.list, { search }, { initialNumItems: 5 });
 
   return (
-    <div className="mx-auto my-4 w-full max-w-none space-y-2 overflow-x-auto px-4 sm:max-w-6xl">
-      <p className="font-medium">Documents</p>
+    <>
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>
@@ -122,6 +121,6 @@ export function DocumentsTable() {
           {status === "LoadingMore" ? "Loading..." : "Load more"}
         </Button>
       </div>
-    </div>
+    </>
   );
 }

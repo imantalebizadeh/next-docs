@@ -3,13 +3,7 @@
 import { type ReactNode, use } from "react";
 
 import { LiveObject } from "@liveblocks/client";
-import {
-  ClientSideSuspense,
-  LiveblocksProvider,
-  RoomProvider,
-} from "@liveblocks/react/suspense";
-
-import { DocumentSkeleton } from "@/components/documents/document-skeleton";
+import { LiveblocksProvider, RoomProvider } from "@liveblocks/react/suspense";
 
 import type { Id } from "../../../convex/_generated/dataModel";
 import { getDocumentsByIds } from "@/data/documents";
@@ -73,9 +67,7 @@ export function Room({
           documentMargins: new LiveObject({ left: 56, right: 56 }),
         }}
       >
-        <ClientSideSuspense fallback={<DocumentSkeleton />}>
-          {children}
-        </ClientSideSuspense>
+        {children}
       </RoomProvider>
     </LiveblocksProvider>
   );

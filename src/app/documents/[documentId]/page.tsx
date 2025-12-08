@@ -3,9 +3,11 @@ import { notFound } from "next/navigation";
 
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 
+import { DocumentSkeleton } from "@/components/documents/document-skeleton";
 import { Editor } from "@/components/editor";
 import { DocumentHeader } from "@/components/layout/document-header";
 import { Room } from "@/components/liveblocks/room";
+import { ClientSideSuspense } from "@/components/liveblocks/suspense-wrapper";
 
 import { getAuthToken } from "@/lib/auth";
 
@@ -46,11 +48,13 @@ export default async function DocumentPage({
   }
 
   return (
-    <Room documentId={documentId} usersPromise={usersPromise}>
-      <div className="min-h-screen bg-muted">
+    <div className="min-h-screen bg-muted">
+      <Room documentId={documentId} usersPromise={usersPromise}>
         <DocumentHeader preloadedDocument={preloadedDocument} />
-        <Editor preloadedDocument={preloadedDocument} />
-      </div>
-    </Room>
+        <ClientSideSuspense fallback={<DocumentSkeleton />}>
+          <Editor preloadedDocument={preloadedDocument} />
+        </ClientSideSuspense>
+      </Room>
+    </div>
   );
 }

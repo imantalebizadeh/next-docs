@@ -28,8 +28,8 @@ export const Logo = (props: SVGProps<SVGSVGElement>) => (
         y2="33.7931"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="OKLCH(0.541 0.281 293.009)" />
-        <stop offset="1" stop-color="OKLCH(0.541 0.281 293.009)" />
+        <stop stopColor="OKLCH(0.541 0.281 293.009)" />
+        <stop offset="1" stopColor="OKLCH(0.541 0.281 293.009)" />
       </linearGradient>
       <linearGradient
         id="paint1_linear_7697_8782"
@@ -39,8 +39,8 @@ export const Logo = (props: SVGProps<SVGSVGElement>) => (
         y2="33.7931"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="OKLCH(0.541 0.281 293.009)" />
-        <stop offset="1" stop-color="OKLCH(0.541 0.281 293.009)" />
+        <stop stopColor="OKLCH(0.541 0.281 293.009)" />
+        <stop offset="1" stopColor="OKLCH(0.541 0.281 293.009)" />
       </linearGradient>
     </defs>
   </svg>

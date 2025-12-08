@@ -1,5 +1,7 @@
 "use client";
 
+import type { ComponentProps } from "react";
+
 import { IconSearch, IconX } from "@tabler/icons-react";
 
 import {
@@ -11,11 +13,13 @@ import {
 
 import { useSearchParams } from "@/hooks/use-search-params";
 
-export function SearchInput() {
+import { cn } from "@/lib/utils";
+
+export function SearchInput({ className, ...props }: ComponentProps<"div">) {
   const { search, setSearch } = useSearchParams();
 
   return (
-    <div className="mx-auto w-full max-w-xl">
+    <div className={cn("w-full max-w-xl", className)} {...props}>
       <InputGroup className="h-10 rounded-full bg-accent">
         <InputGroupInput
           placeholder="Search..."

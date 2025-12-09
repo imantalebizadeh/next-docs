@@ -3,7 +3,11 @@
 import { type ComponentRef, useEffect, useRef, useState } from "react";
 
 import { LiveObject } from "@liveblocks/client";
-import { useMutation, useStorage } from "@liveblocks/react/suspense";
+import {
+  useLostConnectionListener,
+  useMutation,
+  useStorage,
+} from "@liveblocks/react/suspense";
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { type Preloaded, usePreloadedQuery } from "convex/react";
@@ -17,6 +21,7 @@ import { useEditorStore } from "@/providers/editor-provider";
 import type { api } from "../../convex/_generated/api";
 import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
+import { toast } from "sonner";
 
 export function Editor({
   preloadedDocument,
@@ -28,6 +33,23 @@ export function Editor({
   const liveblocks = useLiveblocksExtension({
     initialContent: document.content,
     offlineSupport_experimental: true,
+  });
+
+  useLostConnectionListener((event) => {
+    switch (event) {
+      case "lost":
+        toast.info("Connection lost, still trying to reconnect...");
+        break;
+      case "restored":
+        toast.success("Successfully reconnected again!");
+        break;
+      case "failed":
+        toast.error("Could not restore the connection");
+        break;
+      default:
+        toast.info("Unknown connection event");
+        break;
+    }
   });
 
   const setLeftMargin = useMutation(({ storage }, margin: number) => {

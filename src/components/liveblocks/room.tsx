@@ -25,6 +25,7 @@ export function Room({
     <LiveblocksProvider
       preventUnsavedChanges
       throttle={16}
+      largeMessageStrategy="experimental-fallback-to-http"
       authEndpoint={async () => {
         const room = documentId;
 

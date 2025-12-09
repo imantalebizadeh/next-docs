@@ -71,7 +71,6 @@ export function Editor({
   const setEditor = useEditorStore((store) => store.setEditor);
 
   const editor = useEditor({
-    content: "Hello World",
     extensions: [...extensions, liveblocks],
     editorProps: {
       attributes: {

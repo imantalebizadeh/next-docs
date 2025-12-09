@@ -22,6 +22,7 @@ import {
 
 import { useSearchParams } from "@/hooks/use-search-params";
 
+import { prewarmRoom } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 
 import { api } from "../../../convex/_generated/api";
@@ -67,6 +68,7 @@ export function DocumentsTable() {
                     <IconFileInvoice className="size-4" />
                     <Link
                       href={`/documents/${document._id}`}
+                      onPointerDown={() => prewarmRoom(document._id)}
                       className="hover:underline"
                     >
                       {document.title}

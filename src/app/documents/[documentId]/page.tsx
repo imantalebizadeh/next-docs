@@ -25,7 +25,9 @@ export async function generateMetadata({
   });
 
   return {
-    title: document.title,
+    title: {
+      absolute: document.title,
+    },
   };
 }
 

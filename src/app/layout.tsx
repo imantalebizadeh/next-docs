@@ -20,7 +20,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Google Docs Clone",
+  title: {
+    template: "%s | Next Docs",
+    default: "Next Docs",
+  },
   description: "A clone of Google Docs",
 };
 

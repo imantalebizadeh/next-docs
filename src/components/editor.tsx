@@ -11,6 +11,7 @@ import {
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { type Preloaded, usePreloadedQuery } from "convex/react";
+import { toast } from "sonner";
 
 import { Threads } from "@/components/liveblocks/threads";
 
@@ -21,7 +22,6 @@ import { useEditorStore } from "@/providers/editor-provider";
 import type { api } from "../../convex/_generated/api";
 import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
-import { toast } from "sonner";
 
 export function Editor({
   preloadedDocument,
@@ -97,7 +97,7 @@ export function Editor({
     editorProps: {
       attributes: {
         class:
-          "focus:outline-none w-full mx-auto font-[Arial] max-w-4xl print:max-w-none focus-visible:outline-none border border-border py-14 min-h-svh bg-background prose prose-sm sm:prose-base",
+          "focus:outline-none w-full mx-auto font-[Arial] max-w-4xl print:max-w-none focus-visible:outline-none border border-border py-14 min-h-svh bg-background prose prose-zinc prose-table:border prose-thead: prose-sm prose-th:px-2 prose-th:py-0 prose-th:border-r prose-td:px-2 prose-td:py-0 prose-td:border-r sm:prose-base",
       },
     },
     immediatelyRender: false,

@@ -107,7 +107,7 @@ export function DocumentHeader({
     <header className="flex items-center gap-2 bg-background p-2 print:hidden">
       {/* App Logo */}
       <Link href="/">
-        <Logo className="size-12" />
+        <Logo className="size-10 sm:size-12" />
       </Link>
 
       <div className="flex flex-col">
@@ -130,8 +130,8 @@ export function DocumentHeader({
             autosize
           >
             <EditableArea>
-              <EditablePreview className="p-0 font-medium text-[17px]" />
-              <EditableInput className="p-0 font-medium text-[17px]" />
+              <EditablePreview className="max-w-[150px] truncate p-0 font-medium text-sm sm:text-[17px]" />
+              <EditableInput className="max-w-[150px] truncate p-0 font-medium text-sm sm:text-[17px]" />
             </EditableArea>
           </Editable>
           {/* Sync status */}
@@ -278,6 +278,11 @@ export function DocumentHeader({
           afterSelectOrganizationUrl="/"
           afterSelectPersonalUrl="/"
           fallback={<Skeleton className="h-8 w-28 rounded-md" />}
+          appearance={{
+            elements: {
+              organizationSwitcherTrigger: "hidden sm:flex",
+            },
+          }}
         />
 
         {/* Notifications button */}

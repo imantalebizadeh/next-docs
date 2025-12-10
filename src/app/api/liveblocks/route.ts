@@ -38,10 +38,17 @@ export async function POST(request: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
+  const name = user.fullName ?? "Anonymous";
+  const nameToNumber = name
+    .split("")
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const color = `hsl(${Math.abs(nameToNumber) % 360}, 100%, 50%)`;
+
   const liveblockSession = liveblocks.prepareSession(user.id, {
     userInfo: {
-      name: user.fullName ?? "Anonymous",
+      name,
       avatar: user.imageUrl,
+      color,
     },
   });
 

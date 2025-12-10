@@ -1,5 +1,5 @@
 import type { Editor } from "@tiptap/react";
-import { createStore } from "zustand/vanilla";
+import { create } from "zustand";
 
 export type EditorState = {
   editor: Editor | null;
@@ -16,7 +16,7 @@ export const defaultInitState: EditorState = {
 };
 
 export const createEditorStore = (initState: EditorState = defaultInitState) =>
-  createStore<EditorStore>()((set) => ({
+  create<EditorStore>()((set) => ({
     ...initState,
     setEditor: (editor: Editor | null) => set({ editor }),
   }));

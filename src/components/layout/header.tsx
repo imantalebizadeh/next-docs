@@ -51,7 +51,7 @@ export function Header() {
       </section>
 
       {/* Search Input - Desktop */}
-      <SearchInput className="hidden sm:block" />
+      <SearchInput className="hidden sm:block md:max-w-sm lg:max-w-xl" />
 
       {/* Search Input - Mobile */}
       {!!openSearch && (

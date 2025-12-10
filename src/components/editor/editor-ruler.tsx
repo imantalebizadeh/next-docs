@@ -108,11 +108,11 @@ export function EditorRuler({
               key={`tick-${i + 1}`}
               className={cn(
                 "relative h-2 w-px bg-primary/20",
-                isMajor && "h-4 bg-primary",
-                isMiddle && "bg-primary/50"
+                !!isMajor && "h-4 bg-primary",
+                !!isMiddle && "bg-primary/50"
               )}
             >
-              {isMajor && (
+              {!!isMajor && (
                 <span className="-top-4 -translate-x-1/2 absolute left-1/2 whitespace-nowrap text-[10px] text-foreground">
                   {i}
                 </span>
@@ -125,7 +125,7 @@ export function EditorRuler({
         <div
           className={cn(
             "absolute top-0 h-full w-0.5 cursor-ew-resize bg-primary transition-colors",
-            isDraggingLeft && "bg-primary/80"
+            !!isDraggingLeft && "bg-primary/80"
           )}
           style={{ left: `${leftMargin}px` }}
           onMouseDown={(e) => {
@@ -141,7 +141,7 @@ export function EditorRuler({
         <div
           className={cn(
             "absolute top-0 h-full w-0.5 cursor-ew-resize bg-primary transition-colors",
-            isDraggingRight && "bg-primary/80"
+            !!isDraggingRight && "bg-primary/80"
           )}
           style={{ right: `${rightMargin}px` }}
           onMouseDown={(e) => {

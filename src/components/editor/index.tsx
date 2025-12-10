@@ -19,7 +19,7 @@ import { extensions } from "@/constants/extensions";
 
 import { useEditorStore } from "@/providers/editor-provider";
 
-import type { api } from "../../convex/_generated/api";
+import type { api } from "../../../convex/_generated/api";
 import { EditorRuler } from "./editor-ruler";
 import { EditorToolbar } from "./editor-toolbar";
 

@@ -7,7 +7,7 @@ import { Authenticated, AuthLoading } from "convex/react";
 import { DocumentsTable } from "@/components/documents/documents-table";
 import { DocumentsTableSkeleton } from "@/components/documents/documents-table-skeleton";
 import { Header } from "@/components/layout/header";
-import { TemplatesSection } from "@/components/layout/templates-section";
+import { TemplatesSection } from "@/components/templates-section";
 import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default function HomePage() {

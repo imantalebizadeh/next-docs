@@ -25,16 +25,16 @@ import {
 } from "@tabler/icons-react";
 import { type Editor, useEditorState } from "@tiptap/react";
 
-import { EditorToolbarButton } from "./editor/editor-toolbar-button";
-import { EditorToolbarColorPicker } from "./editor/editor-toolbar-color-picker";
-import { EditorToolbarFontFamilyDropdown } from "./editor/editor-toolbar-fontfamily-dropdown";
-import { EditorToolbarFontSizeDropdown } from "./editor/editor-toolbar-fontsize-dropdown";
-import { EditorToolbarHeadingDropdown } from "./editor/editor-toolbar-heading-dropdown";
-import { EditorToolbarImageDropdown } from "./editor/editor-toolbar-image-dropdown";
-import { EditorToolbarLineHeightDropdown } from "./editor/editor-toolbar-line-height-dropdown";
-import { EditorToolbarLinkButton } from "./editor/editor-toolbar-link-button";
-import { EditorToolbarToggle } from "./editor/editor-toolbar-toggle";
-import { Separator } from "./ui/separator";
+import { Separator } from "../ui/separator";
+import { EditorToolbarButton } from "./editor-toolbar-button";
+import { EditorToolbarColorPicker } from "./editor-toolbar-color-picker";
+import { EditorToolbarFontFamilyDropdown } from "./editor-toolbar-fontfamily-dropdown";
+import { EditorToolbarFontSizeDropdown } from "./editor-toolbar-fontsize-dropdown";
+import { EditorToolbarHeadingDropdown } from "./editor-toolbar-heading-dropdown";
+import { EditorToolbarImageDropdown } from "./editor-toolbar-image-dropdown";
+import { EditorToolbarLineHeightDropdown } from "./editor-toolbar-line-height-dropdown";
+import { EditorToolbarLinkButton } from "./editor-toolbar-link-button";
+import { EditorToolbarToggle } from "./editor-toolbar-toggle";
 
 export function EditorToolbar({ editor }: { editor: Editor | null }) {
   const editorState = useEditorState({

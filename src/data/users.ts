@@ -13,5 +13,6 @@ export async function getUsers() {
     email: user.emailAddresses[0].emailAddress,
     name: user.fullName ?? "Anonymous",
     avatar: user.imageUrl,
+    color: "",
   }));
 }

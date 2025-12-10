@@ -16,7 +16,7 @@ export function Room({
   children: ReactNode;
   documentId: string;
   usersPromise: Promise<
-    { id: string; email: string; name: string; avatar: string }[]
+    { id: string; email: string; name: string; avatar: string; color: string }[]
   >;
 }) {
   const users = use(usersPromise);

@@ -1,6 +1,6 @@
 # Next Docs
 
-A collaborative Google Docs–style editor built with Next.js.
+A full stack collaborative Google Docs–style editor built with Next.js.
 
 ## Features
 

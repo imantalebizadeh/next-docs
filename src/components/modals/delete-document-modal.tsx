@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 
 import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
+import { ConvexError } from "convex/values";
 import { toast } from "sonner";
 
 import {
@@ -47,7 +48,12 @@ export function DeleteDocumentModal({
     },
     onError: (error) => {
       console.log(error);
-      toast.error("Failed to delete document");
+
+      if (error instanceof ConvexError) {
+        toast.error((error.data as { message: string }).message);
+      } else {
+        toast.error("Failed to delete document");
+      }
     },
   });
 

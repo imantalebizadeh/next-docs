@@ -2,6 +2,7 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconX } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
+import { ConvexError } from "convex/values";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -59,7 +60,12 @@ export function RenameDocumentModal({
     },
     onError: (error) => {
       console.log(error);
-      toast.error("Failed to change document title");
+
+      if (error instanceof ConvexError) {
+        toast.error((error.data as { message: string }).message);
+      } else {
+        toast.error("Failed to delete document");
+      }
     },
   });
 

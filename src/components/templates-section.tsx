@@ -1,6 +1,6 @@
 import { templates } from "@/constants/templates";
 
-import { TemplateList } from "../template-list";
+import { TemplateList } from "./template-list";
 
 export function TemplatesSection() {
   return (

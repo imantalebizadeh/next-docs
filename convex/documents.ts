@@ -3,6 +3,7 @@ import { ConvexError, v } from "convex/values";
 
 import type { Doc } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
+import { rateLimiter } from "./lib/rateLimiter";
 
 // Create a new document mutation
 export const create = mutation({
@@ -17,6 +18,18 @@ export const create = mutation({
     }
 
     const userId = identity.subject;
+
+    // Check per-user rate limit for document creation
+    await rateLimiter.limit(ctx, "createDocument", {
+      key: userId,
+      throws: true,
+    });
+
+    // Check global rate limit to prevent system-wide abuse
+    await rateLimiter.limit(ctx, "globalCreateLimit", {
+      throws: true,
+    });
+
     const orgId = (identity.org_id ?? undefined) as string | undefined;
     const documentId = await ctx.db.insert("documents", {
       title: args.title,
@@ -38,6 +51,17 @@ export const update = mutation({
     content: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    // Rate limit updates per user to prevent abuse
+    // Anonymous updates are rate limited by document ID
+    const rateLimitKey = identity?.subject ?? args.documentId;
+
+    await rateLimiter.limit(ctx, "updateDocument", {
+      key: rateLimitKey,
+      throws: true,
+    });
+
     await ctx.db.patch(args.documentId, {
       title: args.title,
       content: args.content,
@@ -56,6 +80,14 @@ export const remove = mutation({
     if (!identity) {
       throw new ConvexError("Unauthorized");
     }
+
+    const userId = identity.subject;
+
+    // Strict rate limit for destructive delete operations
+    await rateLimiter.limit(ctx, "deleteDocument", {
+      key: userId,
+      throws: true,
+    });
 
     const document = await ctx.db.get(args.documentId);
     if (!document) {
